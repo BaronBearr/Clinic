@@ -1,0 +1,78 @@
+﻿<Window x:Class="Clinic.Windows.RegistrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Clinic.Windows"
+        mc:Ignorable="d"
+        Title="Регистрация" Height="450" Width="400" ResizeMode="NoResize">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                <GradientStop Color="#6DB9E5" Offset="0"/>
+                <GradientStop Color="#FFFFFF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Логин:" Margin="5,5,5,5"/>
+        <TextBox Grid.Row="1"  Grid.Column="1" Name="usernameTextBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" MaxLength="30" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Пароль:" Margin="5,5,5,5"/>
+        <PasswordBox Grid.Row="2" Grid.Column="1" Name="passwordBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainPassBox}" MaxLength="30" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="ФИО:" Margin="5,5,5,5"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Name="fullNameTextBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Адрес" Margin="5,5,5,5"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Name="AdressTextBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label Grid.Row="5" Grid.Column="0" Content="Номер телефона:" Margin="5,5,5,5"/>
+        <TextBox Grid.Row="5" Grid.Column="1" FontSize="16" Name="phoneNumberTextBox" Margin="5,0,5,0" VerticalAlignment="Center" GotFocus="PhoneNumberTextBox_GotFocus" LostFocus="PhoneNumberTextBox_LostFocus" PreviewTextInput="PhoneNumberTextBox_PreviewTextInput" HorizontalAlignment="Left" Height="25" Width="200" PreviewKeyDown="TextBox_PreviewKeyDown">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Text" Value="+7 xxx xxx xx xx"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=phoneNumberTextBox}" Value="+7 xxx xxx xx-xx">
+                            <Setter Property="Foreground" Value="LightGray"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Label Grid.Row="6" Grid.Column="0" Content="Полис:" Margin="5,5,5,5"/>
+        <TextBox Grid.Row="6" Grid.Column="1" Name="PolisTextBox" Margin="5,0,5,0" VerticalAlignment="Center" PreviewTextInput="PolisTextBox_PreviewTextInput" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label Grid.Row="7" Grid.Column="0" Content="Дата рождения:" Margin="5,5,5,5"/>
+        <DatePicker Grid.Row="7" Grid.Column="1" Name="dobDatePicker" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainDatePicker}" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label Grid.Row="8" Grid.Column="0" Content="Пол:" Margin="5,5,5,5"/>
+        <ComboBox Grid.Row="8" Grid.Column="1" Name="genderComboBox" Margin="5,0,5,0" VerticalAlignment="Center" Loaded="genderComboBox_Loaded" HorizontalAlignment="Left" Style="{StaticResource MainComboBox}"/>
+
+        <Label Grid.Row="9" Grid.Column="0" Content="Почта: " Margin="5,5,5,5"/>
+        <TextBox Grid.Row="9" Grid.Column="1" Name="EmailTextBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+
+        <StackPanel Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left"  Margin="30,20,0,115" Width="200" Height="40" >
+            <Button Content="Сохранить" Width="90" Margin="5" Click="SaveButton_Click" Style="{StaticResource MainButton}"/>
+            <Button Content="Отмена" Width="80" Margin="5" Click="CancelButton_Click" Style="{StaticResource MainButton}"/>
+        </StackPanel>
+    </Grid>
+</Window>

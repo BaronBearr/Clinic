@@ -1,0 +1,56 @@
+﻿<Window x:Class="Clinic.Windows.AddRecordWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Clinic.Windows"
+        mc:Ignorable="d"
+        Title="Добавление записи" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#6DB9E5" Offset="0"/>
+                <GradientStop Color="#FFFFFF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+
+        <Label Content="Дата: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+        <DatePicker x:Name="datePicker" Width="140" SelectedDate="{Binding Path=Date}" Margin="5,0,0,0" Grid.Row="0" Grid.Column="1" Style="{StaticResource MainDatePicker}" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label Content="Время" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="timeTextBox" Width="140" HorizontalContentAlignment="Center" Text="{Binding Path=Time}" Margin="5,0,0,0" Grid.Row="1" Grid.Column="1" PreviewTextInput="TimeTextBox_PreviewTextInput" GotFocus="TimeTextBox_GotFocus" LostFocus="TimeTextBox_LostFocus" Style="{StaticResource MainTextBox}" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label Content="Сотрудник" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="userComboBox" DisplayMemberPath="FullName" SelectedValuePath="UserID" Width="140" SelectedValue="{Binding Path=UserID}" Margin="5,0,0,0" Grid.Row="2" Grid.Column="1" Style="{StaticResource MainComboBox}"/>
+
+        <Label Content="Пациент" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="clientComboBox" DisplayMemberPath="FullName" SelectedValuePath="ClientID" SelectedValue="{Binding Path=ClientID}" Margin="5,0,0,0" Width="140" Grid.Row="3" Grid.Column="1" Style="{StaticResource MainComboBox}"/>
+
+        <Label Content="Диагноз" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="diagnosisComboBox" DisplayMemberPath="DiagnosisName" SelectedValuePath="DiagnosisID" SelectedValue="{Binding Path=DiagnosisID}" Margin="5,0,0,0" Width="140" Grid.Row="4" Grid.Column="1" Style="{StaticResource MainComboBox}"/>
+
+        <Label Content="Лекарство" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="drugsComboBox" DisplayMemberPath="Name" SelectedValuePath="DrugsID" SelectedValue="{Binding Path=DrugsID}" Margin="5,0,0,0" Width="140" Grid.Row="5" Grid.Column="1" Style="{StaticResource MainComboBox}"/>
+
+        <StackPanel Grid.Column="1" Grid.Row="6" Orientation="Horizontal">
+            <Button Content="Отмена" Width="90" Click="Cancel_Click" Style="{StaticResource MainButton}"/>
+            <Button  Content="Записать" Width="90" Click="AddRecord_Click" HorizontalAlignment="Left" Margin="15" Style="{StaticResource MainButton}"/>
+        </StackPanel>
+    </Grid>
+
+</Window>
