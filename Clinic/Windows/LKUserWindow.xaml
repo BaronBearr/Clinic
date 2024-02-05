@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Clinic.Windows"
         mc:Ignorable="d"
-        Title="Личный кабинет" Height="550" Width="700" ResizeMode="NoResize">
+        Title="Личный кабинет" Height="570" Width="700" ResizeMode="NoResize">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">

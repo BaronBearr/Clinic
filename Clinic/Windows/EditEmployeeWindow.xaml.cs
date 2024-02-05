@@ -121,7 +121,9 @@ namespace Clinic.Windows
 
                     if (result != null && result != DBNull.Value)
                     {
-                        passwordBox.Password = result.ToString();
+                        // Дешифрование пароля перед загрузкой в PasswordBox
+                        string decryptedPassword = EncryptionHelper.Decrypt(result.ToString(), "6uH8#bgZpE$@2sD1");
+                        passwordBox.Password = decryptedPassword;
                     }
                 }
             }
@@ -492,7 +494,7 @@ namespace Clinic.Windows
             int roleId = GetSelectedRoleId(selectedRole);
             int categoryId = GetSelectedCategoryId(selectedCategory);
             int jobTitleId = GetSelectedJobTitleId(selectedJobTitle);
-
+            string encryptedPassword = EncryptionHelper.Encrypt(password, "6uH8#bgZpE$@2sD1");
 
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -523,7 +525,7 @@ namespace Clinic.Windows
                 command.Parameters.AddWithValue("@JobTitleID", jobTitleId);
                 command.Parameters.AddWithValue("@Email", email);
                 command.Parameters.AddWithValue("@NewLogin", newLogin);
-                command.Parameters.AddWithValue("@Password", password);
+                command.Parameters.AddWithValue("@Password", encryptedPassword);
                 command.Parameters.AddWithValue("@Phone", phone);
                 command.Parameters.AddWithValue("@RoleID", roleId);
                 command.Parameters.AddWithValue("@Expirience", experience);

@@ -340,6 +340,7 @@ namespace Clinic.Windows
                 int roleId = GetSelectedRoleId(roleComboBox.SelectedItem?.ToString());
                 int categoryId = GetSelectedCategoryId(categoryComboBox.SelectedItem?.ToString());
                 int jobTitleId = GetSelectedJobTitleId(jobTitleComboBox.SelectedItem?.ToString());
+                string encryptedPassword = EncryptionHelper.Encrypt(password, "6uH8#bgZpE$@2sD1");
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -352,7 +353,7 @@ namespace Clinic.Windows
                     command.Parameters.AddWithValue("@JobTitleID", jobTitleId);
                     command.Parameters.AddWithValue("@Email", email);
                     command.Parameters.AddWithValue("@Login", login);
-                    command.Parameters.AddWithValue("@Password", password);
+                    command.Parameters.AddWithValue("@Password", encryptedPassword);
                     command.Parameters.AddWithValue("@Phone", phone);
                     command.Parameters.AddWithValue("@RoleID", roleId);
                     command.Parameters.AddWithValue("@Expirience", experience);
@@ -366,7 +367,7 @@ namespace Clinic.Windows
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Данные успешно сохранены.");
-                            ClearFields();
+                            this.Close();
                             admWindow.LoadEmployees();
 
                         }

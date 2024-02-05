@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Clinic.AllClass;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -249,8 +250,9 @@ namespace Clinic.Windows
             {
                 MessageBox.Show("ФИО не может содержать специальные символы");
                 return;
-            }   
+            }
 
+            string encryptedPassword = EncryptionHelper.Encrypt(password, "6uH8#bgZpE$@2sD1");
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -267,7 +269,7 @@ namespace Clinic.Windows
                 command.Parameters.AddWithValue("@ClientEmail", email); 
                 command.Parameters.AddWithValue("@GenderID", GetGenderId(gender)); 
                 command.Parameters.AddWithValue("@Login", login);
-                command.Parameters.AddWithValue("@Password", password);
+                command.Parameters.AddWithValue("@Password", encryptedPassword);
 
                 try
                 {

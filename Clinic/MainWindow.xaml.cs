@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Clinic.AllClass;
 
 namespace Clinic
 {
@@ -138,16 +139,26 @@ namespace Clinic
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT COUNT(*) FROM Client WHERE Login = @Username AND Password = @Password";
+                string query = "SELECT Password FROM Client WHERE Login = @Username";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Username", username);
-                command.Parameters.AddWithValue("@Password", password);
 
                 try
                 {
                     connection.Open();
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-                    return count > 0;
+                    object result = command.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        string decryptedPassword = EncryptionHelper.Decrypt(result.ToString(), "6uH8#bgZpE$@2sD1");
+
+                        if (decryptedPassword == password)
+                        {
+                            return true; 
+                        }
+                    }
+
+                    return false; 
                 }
                 catch (Exception ex)
                 {
@@ -160,15 +171,26 @@ namespace Clinic
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT COUNT(*) FROM [User] WHERE Login = @Username AND Password = @Password";
+                string query = "SELECT Password FROM [User] WHERE Login = @Username";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Username", username);
-                command.Parameters.AddWithValue("@Password", password);
+
                 try
                 {
                     connection.Open();
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-                    return count > 0;
+                    object result = command.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        string decryptedPassword = EncryptionHelper.Decrypt(result.ToString(), "6uH8#bgZpE$@2sD1");
+
+                        if (decryptedPassword == password)
+                        {
+                            return true; 
+                        }
+                    }
+
+                    return false;
                 }
                 catch (Exception ex)
                 {
@@ -177,6 +199,7 @@ namespace Clinic
                 }
             }
         }
+
         private int GetUserRoleId(string username)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
