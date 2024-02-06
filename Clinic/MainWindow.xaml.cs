@@ -101,7 +101,7 @@ namespace Clinic
             }
             else
             {
-                MessageBox.Show("Неверное имя пользователя или пароль.");
+                MessageBox.Show("Неверное имя пользователя или пароль.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

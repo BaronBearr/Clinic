@@ -44,6 +44,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left"  Margin="0,4,0,3" Width="400">
             <Button Content="Статистика" Click="Statistic_Click" Margin="30,0,0,0" Style="{StaticResource MainButton}"/>
+            <Button Content="Закрыть" Click="Close_Click" Margin="30,0,0,0" Style="{StaticResource MainButton}"/>
         </StackPanel>
     </Grid>
 </Window>

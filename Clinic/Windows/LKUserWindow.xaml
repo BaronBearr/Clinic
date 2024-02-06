@@ -42,8 +42,8 @@
             <TextBox IsEnabled="False" Width="250" Style="{StaticResource MainTextBox}" Name="genderTextBox"/>
 
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left"  Margin="0,4,0,3" Width="400">
-            <Button Width="70" Content="Назад" Click="Statistic_Click" Margin="30,0,0,0" Style="{StaticResource MainButton}"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,4,0,3" Width="400">
+            <Button Content="Закрыть" Click="Close_Click" Margin="30,0,0,0" Style="{StaticResource MainButton}"/>
         </StackPanel>
     </Grid>
 </Window>

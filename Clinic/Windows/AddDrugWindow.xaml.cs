@@ -42,13 +42,13 @@ namespace Clinic.Windows
 
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    MessageBox.Show("Введи название", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Введи название", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(description))
                 {
-                    MessageBox.Show("Введи описание", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Введи описание", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 

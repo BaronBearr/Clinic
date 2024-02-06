@@ -36,39 +36,8 @@ namespace Clinic.Windows
             LoadClients();
             LoadDiagnoses();
             LoadEmployees();
-            LoadDrugs();
         }
 
-        private void LoadDrugs()
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string query = "SELECT DrugsID, Description, Name FROM Drugs";
-                    SqlCommand command = new SqlCommand(query, connection);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Drug drug = new Drug
-                            {
-                                DrugsID = (int)reader["DrugsID"],
-                                Description = reader["Description"].ToString(),
-                                Name = reader["Name"].ToString(),
-                            };
-                            drugsComboBox.Items.Add(drug);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка загрузки лекарств: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
         private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
@@ -185,15 +154,13 @@ namespace Clinic.Windows
                     int selectedUserID = (int)userComboBox.SelectedValue;
                     int selectedClientID = (int)clientComboBox.SelectedValue;
                     int selectedDiagnosisID = (int)diagnosisComboBox.SelectedValue;
-                    int selectedDrugsID = (int)drugsComboBox.SelectedValue; 
 
                     string updateQuery = "UPDATE Record " +
                                          "SET Date = @Date, " +
                                          "Time = @Time, " +
                                          "UserID = @UserID, " +
                                          "ClientID = @ClientID, " +
-                                         "DiagnosisID = @DiagnosisID, " +
-                                         "DrugsID = @DrugsID " +
+                                         "DiagnosisID = @DiagnosisID " +  
                                          "WHERE RecordID = @RecordID";
 
                     using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
@@ -204,7 +171,6 @@ namespace Clinic.Windows
                         updateCommand.Parameters.AddWithValue("@UserID", selectedUserID);
                         updateCommand.Parameters.AddWithValue("@ClientID", selectedClientID);
                         updateCommand.Parameters.AddWithValue("@DiagnosisID", selectedDiagnosisID);
-                        updateCommand.Parameters.AddWithValue("@DrugsID", selectedDrugsID); 
 
                         int rowsAffected = updateCommand.ExecuteNonQuery();
 
@@ -226,6 +192,7 @@ namespace Clinic.Windows
                 MessageBox.Show("Ошибка при сохранении данных: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
 
         private void TimeTextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -295,12 +262,6 @@ namespace Clinic.Windows
             if (_selectedDiagnosis != null)
             {
                 diagnosisComboBox.SelectedItem = _selectedDiagnosis;
-            }
-
-            _selectedDrug = drugsComboBox.Items.OfType<Drug>().FirstOrDefault(drg => drg.Name == selectedRecord.DrugName);
-            if (_selectedDrug != null)
-            {
-                drugsComboBox.SelectedItem = _selectedDrug;
             }
         }
 

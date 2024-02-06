@@ -17,7 +17,7 @@ namespace Clinic.AllClass
             using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = Encoding.UTF8.GetBytes(key);
-                aesAlg.IV = new byte[16]; // Используйте уникальный IV для каждого сообщения
+                aesAlg.IV = new byte[16]; 
 
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
@@ -40,7 +40,7 @@ namespace Clinic.AllClass
             using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = Encoding.UTF8.GetBytes(key);
-                aesAlg.IV = new byte[16]; // Используйте тот же IV, который использовался при шифровании
+                aesAlg.IV = new byte[16]; 
 
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
@@ -66,7 +66,6 @@ namespace Clinic.AllClass
             }
             catch (Exception ex)
             {
-                // Обработка ошибок, например, неверного ключа или некорректного формата шифрованного текста
                 MessageBox.Show("Ошибка дешифрования: " + ex.Message);
             }
         }

@@ -49,7 +49,7 @@ namespace Clinic.Windows
 
                 if (string.IsNullOrWhiteSpace(diagnosisName))
                 {
-                    MessageBox.Show("Введите диагноз", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Введите диагноз", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 

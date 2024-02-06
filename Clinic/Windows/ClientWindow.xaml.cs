@@ -32,7 +32,6 @@ namespace Clinic.Windows
             {
                 
                 LKUserWindow lKuserWindow = new LKUserWindow(clientId);
-                this.Close();
                 lKuserWindow.Show();
             }
             catch (Exception ex)

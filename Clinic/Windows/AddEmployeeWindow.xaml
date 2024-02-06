@@ -73,7 +73,7 @@
         </TextBox>
 
         <Label Grid.Row="9" Grid.Column="0" Content="Стаж:" Margin="5"/>
-        <TextBox Grid.Row="9" Grid.Column="1" Name="experienceTextBox" Margin="5" VerticalAlignment="Center" Style="{StaticResource MainTextBox}" MaxLength="2" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <TextBox Grid.Row="9" Grid.Column="1" Name="experienceTextBox" Margin="5" VerticalAlignment="Center" Style="{StaticResource MainTextBox}" MaxLength="2" PreviewKeyDown="TextBox_PreviewKeyDown" PreviewTextInput="experienceTextBox_PreviewTextInput"/>
 
         <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" Margin="20">
             <Button Width="90" HorizontalAlignment="Left" Grid.ColumnSpan="2" Content="Сохранить" Margin="20" Click="addEmployee_Click" Style="{StaticResource MainButton}"/>

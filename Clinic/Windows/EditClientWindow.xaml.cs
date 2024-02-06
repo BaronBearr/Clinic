@@ -60,6 +60,7 @@ namespace Clinic.Windows
             string polis = policyNumberTextBox.Text;
             string gender = genderComboBox.SelectedItem?.ToString();
             string login = loginTextBox.Text;
+            int age = DateTime.Now.Year - dob.Year;
             string newpassword = passwordBox.Password;
             string email = emailTextBox.Text;
             string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
@@ -69,97 +70,118 @@ namespace Clinic.Windows
 
             if (string.IsNullOrWhiteSpace(login) || login.Contains(" ") || login.Any(char.IsWhiteSpace))
             {
-                MessageBox.Show("Введи логин.");
+                MessageBox.Show("Введи логин.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (fullname.Contains(" ") && fullname.Length >= 10)
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("Введи фамилию и имя", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (DateTime.Now.Month < dob.Month || (DateTime.Now.Month == dob.Month && DateTime.Now.Day < dob.Day))
+            {
+                age--;
+            }
+
+            if (age < 18 || age > 99)
+            {
+                MessageBox.Show("Возраст должен быть от 18 до 99 лет.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(newpassword) || newpassword.Contains(" ") || newpassword.Any(char.IsWhiteSpace))
             {
-                MessageBox.Show("Введи пароль.");
+                MessageBox.Show("Введи пароль.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (email.Contains(" ") || email.Any(char.IsWhiteSpace))
             {
-                MessageBox.Show("Некорретный формат электронной почты");
+                MessageBox.Show("Некорретный формат электронной почты", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(adress))
             {
-                MessageBox.Show("Введите адрес");
+                MessageBox.Show("Введите адрес", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(polis))
             {
-                MessageBox.Show("Введите полис");
+                MessageBox.Show("Введите полис", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(fullname))
             {
-                MessageBox.Show("Введите ФИО");
+                MessageBox.Show("Введите ФИО", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (genderComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show("Выберите ваш пол");
+                MessageBox.Show("Выберите ваш пол", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (dobDatePicker.SelectedDate == null)
             {
-                MessageBox.Show("Выберите дату рождения");
+                MessageBox.Show("Выберите дату рождения", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (dob > DateTime.Now)
             {
-                MessageBox.Show("Дата рождения не может быть в будущем");
+                MessageBox.Show("Дата рождения не может быть в будущем", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!Regex.IsMatch(email, emailPattern))
             {
-                MessageBox.Show("Некорректный формат электронной почты");
+                MessageBox.Show("Некорректный формат электронной почты", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!Regex.IsMatch(polis, policyPattern))
             {
-                MessageBox.Show("Некорректный формат номера полиса. Введите номер в формате xxxx xxxx xxxx xxxx");
+                MessageBox.Show("Некорректный формат номера полиса. Введите номер в формате xxxx xxxx xxxx xxxx", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!Regex.IsMatch(phone, phonePattern))
             {
-                MessageBox.Show("Некорректный формат номера телефона. Пожалуйста, введите номер в формате +7 xxx xxx xx xx");
+                MessageBox.Show("Некорректный формат номера телефона. Пожалуйста, введите номер в формате +7 xxx xxx xx xx", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (Regex.IsMatch(fullname, @"\d"))
             {
-                MessageBox.Show("ФИО не может содержать цифры");
+                MessageBox.Show("ФИО не может содержать цифры", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (Regex.IsMatch(fullname, @"[!@#$%^&*()_+=\[{\]};:<>|./?,-]"))
             {
-                MessageBox.Show("ФИО не может содержать специальные символы");
+                MessageBox.Show("ФИО не может содержать специальные символы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (login.Length < 4)
             {
-                MessageBox.Show("Логин должен быть больше 4 символов.");
+                MessageBox.Show("Логин должен быть больше 4 символов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (newpassword.Length < 4)
             {
-                MessageBox.Show("Пароль должен быть больше 4 символов.");
+                MessageBox.Show("Пароль должен быть больше 4 символов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -174,10 +196,13 @@ namespace Clinic.Windows
                 {
                     if (!IsLoginUnique(newLogin, userId))
                     {
-                        MessageBox.Show("Логин уже существует. Пожалуйста, выберите другой логин.");
+                        MessageBox.Show("Логин уже существует. Пожалуйста, выберите другой логин.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
                 }
+
+                string encryptedPassword = EncryptionHelper.Encrypt(newpassword, "6uH8#bgZpE$@2sD1");
+
 
                 string query = "UPDATE Client SET " +
                                "FullName = @FullName, " +
@@ -201,7 +226,7 @@ namespace Clinic.Windows
                 command.Parameters.AddWithValue("@ClientEmail", email);
                 command.Parameters.AddWithValue("@GenderID", GetGenderId(gender));
                 command.Parameters.AddWithValue("@NewLogin", newLogin);
-                command.Parameters.AddWithValue("@Password", newpassword);
+                command.Parameters.AddWithValue("@Password", encryptedPassword);
                 command.Parameters.AddWithValue("@ClientID", selectedClient.ClientID); 
 
                 try
@@ -210,14 +235,14 @@ namespace Clinic.Windows
 
                     if (rowsAffected > 0)
                     {
-                        MessageBox.Show("Данные успешно обновлены");
+                        MessageBox.Show("Данные успешно обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                         admWindow.LoadClients();
 
                         this.Close();
                     }
                     else
                     {
-                        MessageBox.Show("Не удалось обновить данные");
+                        MessageBox.Show("Не удалось обновить данные", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 catch (Exception ex)
@@ -319,7 +344,8 @@ namespace Clinic.Windows
 
                     if (result != null && result != DBNull.Value)
                     {
-                        passwordTextBox.Password = result.ToString();
+                        string decryptedPassword = EncryptionHelper.Decrypt(result.ToString(), "6uH8#bgZpE$@2sD1");
+                        passwordBox.Password = decryptedPassword;
                     }
                 }
             }

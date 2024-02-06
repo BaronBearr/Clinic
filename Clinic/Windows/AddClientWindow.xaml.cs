@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Clinic.AllClass;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -91,6 +92,7 @@ namespace Clinic.Windows
                 {
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
+                    genderComboBox.Items.Insert(0, "Не выбрано");
 
                     while (reader.Read())
                     {
@@ -98,6 +100,7 @@ namespace Clinic.Windows
                     }
 
                     reader.Close();
+                    genderComboBox.SelectedIndex = 0;
                 }
                 catch (Exception ex)
                 {
@@ -105,6 +108,8 @@ namespace Clinic.Windows
                 }
             }
         }
+
+
 
         private void genderComboBox_Loaded(object sender, RoutedEventArgs e)
         {
@@ -161,6 +166,7 @@ namespace Clinic.Windows
             string address = adressTextBox.Text;
             string policyNumber = policyNumberTextBox.Text;
             DateTime dob = dobDatePicker.SelectedDate ?? DateTime.Now;
+            int age = DateTime.Now.Year - dob.Year;
             string gender = genderComboBox.SelectedItem?.ToString();
             string login = loginTextBox.Text;
             string password = passwordBox.Password;
@@ -171,37 +177,64 @@ namespace Clinic.Windows
 
             if (string.IsNullOrWhiteSpace(login) || login.Contains(" ") || login.Any(char.IsWhiteSpace))
             {
-                MessageBox.Show("Введи логин.");
+                MessageBox.Show("Введи логин.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (fullName.Contains(" ") && fullName.Length >= 10)
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("Введи фамилию и имя", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (DateTime.Now.Month < dob.Month || (DateTime.Now.Month == dob.Month && DateTime.Now.Day < dob.Day))
+            {
+                age--; 
+            }
+
+            if (age < 18 || age > 99)
+            {
+                MessageBox.Show("Возраст должен быть от 18 до 99 лет.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (genderComboBox.Text == "Не выбрано")
+            {
+                MessageBox.Show("Выбери пол", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(password) || password.Contains(" ") || password.Any(char.IsWhiteSpace))
             {
-                MessageBox.Show("Введи пароль.");
+                MessageBox.Show("Введи пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (email.Contains(" ") || email.Any(char.IsWhiteSpace))
             {
-                MessageBox.Show("Некорретный формат электронной почты");
+                MessageBox.Show("Некорретный формат электронной почты", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(address))
             {
-                MessageBox.Show("Введите адрес");
+                MessageBox.Show("Введите адрес", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(policyNumber))
             {
-                MessageBox.Show("Введите полис");
+                MessageBox.Show("Введите полис", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(fullName))
             {
-                MessageBox.Show("Введите ФИО");
+                MessageBox.Show("Введите ФИО", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -212,65 +245,66 @@ namespace Clinic.Windows
 
             if (genderComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show("Выберите ваш пол");
+                MessageBox.Show("Выберите ваш пол", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (dobDatePicker.SelectedDate == null)
             {
-                MessageBox.Show("Выберите дату рождения");
+                MessageBox.Show("Выберите дату рождения", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             
 
             if (dob > DateTime.Now)
             {
-                MessageBox.Show("Дата рождения не может быть в будущем");
+                MessageBox.Show("Дата рождения не может быть в будущем", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!Regex.IsMatch(email, emailPattern))
             {
-                MessageBox.Show("Некорректный формат электронной почты");
+                MessageBox.Show("Некорректный формат электронной почты", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!Regex.IsMatch(policyNumber, policyPattern))
             {
-                MessageBox.Show("Некорректный формат номера полиса. Введите номер в формате xxxx xxxx xxxx xxxx");
+                MessageBox.Show("Некорректный формат номера полиса. Введите номер в формате xxxx xxxx xxxx xxxx", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error );
                 return;
             }
 
             if (!Regex.IsMatch(phoneNumber, phonePattern))
             {
-                MessageBox.Show("Некорректный формат номера телефона. Пожалуйста, введите номер в формате +7 xxx xxx xx xx");
+                MessageBox.Show("Некорректный формат номера телефона. Пожалуйста, введите номер в формате +7 xxx xxx xx xx", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (Regex.IsMatch(fullName, @"\d"))
             {
-                MessageBox.Show("ФИО не может содержать цифры");
+                MessageBox.Show("ФИО не может содержать цифры", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (Regex.IsMatch(fullName, @"[!@#$%^&*()_+=\[{\]};:<>|./?,-]"))
             {
-                MessageBox.Show("ФИО не может содержать специальные символы");
+                MessageBox.Show("ФИО не может содержать специальные символы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (login.Length < 4)
             {
-                MessageBox.Show("Логин должен быть больше 4 символов.");
+                MessageBox.Show("Логин должен быть больше 4 символов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (password.Length < 4)
             {
-                MessageBox.Show("Пароль должен быть больше 4 символов.");
+                MessageBox.Show("Пароль должен быть больше 4 символов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
+            string encryptedPassword = EncryptionHelper.Encrypt(password, "6uH8#bgZpE$@2sD1");
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -287,7 +321,7 @@ namespace Clinic.Windows
                 command.Parameters.AddWithValue("@ClientEmail", email);
                 command.Parameters.AddWithValue("@GenderID", GetGenderId(gender));
                 command.Parameters.AddWithValue("@Login", login);
-                command.Parameters.AddWithValue("@Password", password);
+                command.Parameters.AddWithValue("@Password", encryptedPassword);
 
                 try
                 {
@@ -296,13 +330,13 @@ namespace Clinic.Windows
 
                     if (rowsAffected > 0)
                     {
-                        MessageBox.Show("Вы успешно зарегистрировали клиента");
+                        MessageBox.Show("Вы успешно зарегистрировали клиента", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                         admWindow.LoadClients();
                         this.Close();
                     }
                     else
                     {
-                        MessageBox.Show("Не удалось зарегистрироваться");
+                        MessageBox.Show("Не удалось зарегистрироваться", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 catch (Exception ex)

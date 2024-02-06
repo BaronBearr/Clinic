@@ -44,9 +44,6 @@
         <Label Content="Диагноз" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
         <ComboBox x:Name="diagnosisComboBox" DisplayMemberPath="DiagnosisName" SelectedValuePath="DiagnosisID" SelectedValue="{Binding Path=DiagnosisID}" Margin="5,0,0,0" Width="140" Grid.Row="4" Grid.Column="1" Style="{StaticResource MainComboBox}"/>
 
-        <Label Content="Лекарство" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="drugsComboBox" DisplayMemberPath="Name" SelectedValuePath="DrugsID" SelectedValue="{Binding Path=DrugsID}" Margin="5,0,0,0" Width="140" Grid.Row="5" Grid.Column="1" Style="{StaticResource MainComboBox}"/>
-
         <StackPanel Grid.Column="1" Grid.Row="6" Orientation="Horizontal">
             <Button Content="Отмена" Width="90" Click="Cancel_Click" Style="{StaticResource MainButton}"/>
             <Button  Content="Записать" Width="90" Click="AddRecord_Click" HorizontalAlignment="Left" Margin="15" Style="{StaticResource MainButton}"/>

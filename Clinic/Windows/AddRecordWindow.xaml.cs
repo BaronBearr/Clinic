@@ -28,39 +28,8 @@ namespace Clinic.Windows
             LoadEmployees();
             LoadDiagnoses();
             LoadClients();
-            LoadDrugs();
         }
 
-        private void LoadDrugs()
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string query = "SELECT DrugsID, Description, Name FROM Drugs";
-                    SqlCommand command = new SqlCommand(query, connection);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Drug drug = new Drug
-                            {
-                                DrugsID = (int)reader["DrugsID"],
-                                Description = reader["Description"].ToString(),
-                                Name = reader["Name"].ToString(),
-                            };
-                            drugsComboBox.Items.Add(drug);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка загрузки лекарств: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
         private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
@@ -147,6 +116,7 @@ namespace Clinic.Windows
                                 DiagnosisName = reader["DiagnosisName"].ToString()
                             };
                             diagnosisComboBox.Items.Add(diagnosis);
+
                         }
                     }
                 }
@@ -202,28 +172,26 @@ namespace Clinic.Windows
                     string.IsNullOrWhiteSpace(timeTextBox.Text) ||
                     userComboBox.SelectedValue == null ||
                     clientComboBox.SelectedValue == null ||
-                    diagnosisComboBox.SelectedValue == null ||
-                    drugsComboBox.SelectedValue == null)
+                    diagnosisComboBox.SelectedValue == null)
                 {
-                    MessageBox.Show("Заполни все поля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Заполни все поля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 DateTime selectedDate = datePicker.SelectedDate.Value;
                 if (selectedDate < DateTime.Today)
                 {
-                    MessageBox.Show("Дата не может быть раньше текущей", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Дата не может быть раньше текущей", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 if (!TimeSpan.TryParse(timeTextBox.Text, out TimeSpan selectedTime))
                 {
-                    MessageBox.Show("Используй время в формате HH:MM", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Используй время в формате HH:MM", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 int selectedUserID = (int)userComboBox.SelectedValue;
-                int selectedDrugsID = (int)drugsComboBox.SelectedValue;
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -239,7 +207,7 @@ namespace Clinic.Windows
 
                         if (roleID == 1)
                         {
-                            MessageBox.Show("Нельзя выбрать администратора", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            MessageBox.Show("Нельзя выбрать администратора", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
                     }
@@ -273,8 +241,8 @@ namespace Clinic.Windows
                         }
                     }
 
-                    string insertQuery = "INSERT INTO Record (Date, Time, UserID, ClientID, DiagnosisID, DrugsID) " +
-                                 "VALUES (@Date, @Time, @UserID, @ClientID, @DiagnosisID, @DrugsID)";
+                    string insertQuery = "INSERT INTO Record (Date, Time, UserID, ClientID, DiagnosisID) " +
+                                 "VALUES (@Date, @Time, @UserID, @ClientID, @DiagnosisID)";
 
                     using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
                     {
@@ -283,7 +251,6 @@ namespace Clinic.Windows
                         insertCommand.Parameters.AddWithValue("@UserID", selectedUserID);
                         insertCommand.Parameters.AddWithValue("@ClientID", selectedClientID);
                         insertCommand.Parameters.AddWithValue("@DiagnosisID", selectedDiagnosisID);
-                        insertCommand.Parameters.AddWithValue("@DrugsID", selectedDrugsID);
 
                         int rowsAffected = insertCommand.ExecuteNonQuery();
 

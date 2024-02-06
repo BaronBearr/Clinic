@@ -112,7 +112,7 @@ namespace Clinic.Windows
         private void ChangePhoto_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
+            openFileDialog.Filter = "Image Files|*.png;*.jpg;*.jpeg";
 
             if (openFileDialog.ShowDialog() == true)
             {
@@ -140,13 +140,9 @@ namespace Clinic.Windows
             }
         }
 
-
-        private void Statistic_Click(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
-            
-            ClientWindow clientWindow = new ClientWindow(clientId);
             this.Close();
-            clientWindow.Show();
         }
     }
 }
