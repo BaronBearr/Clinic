@@ -34,6 +34,7 @@ namespace Clinic.Windows
             LoadDrugs();
             LoadDiagnoses();
             LoadRecords();
+            LoadConclusions();
         }
         // ОКНО СОТРУДНИКИ
         public void LoadEmployees()
@@ -87,7 +88,7 @@ namespace Clinic.Windows
         {
             try
             {
-                LKWindow lKWindow = new LKWindow(userId); 
+                LKWindow lKWindow = new LKWindow(userId);
                 lKWindow.Show();
             }
             catch (Exception ex)
@@ -213,7 +214,7 @@ namespace Clinic.Windows
             }
             categoryComboBox.ItemsSource = categories;
             categoryComboBox.DisplayMemberPath = "Name_Category";
-            categoryComboBox.SelectedIndex = 0; 
+            categoryComboBox.SelectedIndex = 0;
         }
         private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -635,7 +636,7 @@ namespace Clinic.Windows
 
             if ((textBox.Text + e.Text).Length > 30)
             {
-                e.Handled = true; 
+                e.Handled = true;
             }
         }
         private void Search3TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -801,15 +802,10 @@ namespace Clinic.Windows
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName, D.DiagnosisName AS Diagnosis, " +
-                               "STRING_AGG(DR.Name, ', ') AS DrugNames " +
+                string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName " +
                                "FROM Record R " +
                                "JOIN [User] U ON R.UserID = U.UserID " +
-                               "JOIN Client C ON R.ClientID = C.ClientID " +
-                               "JOIN Diagnosis D ON R.DiagnosisID = D.DiagnosisID " +
-                               "JOIN DiagnosisDrugs DD ON D.DiagnosisID = DD.DiagnosisID " +
-                               "JOIN Drugs DR ON DD.DrugsID = DR.DrugsID " +
-                               "GROUP BY R.RecordID, R.Date, R.Time, U.FullName, C.FullName, D.DiagnosisName";
+                               "JOIN Client C ON R.ClientID = C.ClientID";
 
                 SqlCommand command = new SqlCommand(query, connection);
 
@@ -827,8 +823,6 @@ namespace Clinic.Windows
                             Time = TimeSpan.Parse(reader["Time"].ToString()),
                             UserName = reader["UserName"].ToString(),
                             ClientName = reader["ClientName"].ToString(),
-                            Diagnosis = reader["Diagnosis"].ToString(),
-                            DrugName = reader["DrugNames"].ToString()
                         };
 
                         records.Add(record);
@@ -845,6 +839,27 @@ namespace Clinic.Windows
             dgRecords.ItemsSource = records;
         }
 
+        private void ContextMenu_AddConclusion_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgRecords.SelectedItem != null)
+            {
+                Record selectedRecord = (Record)dgRecords.SelectedItem;
+
+                Conclusion newConclusion = new Conclusion
+                {
+                    RecordID = selectedRecord.RecordID,
+                    DrugsID = 0,
+                    DiagnosisID = 0
+                };
+
+                AddConclusionWindow addConclusionWindow = new AddConclusionWindow(this, newConclusion);
+                addConclusionWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Выберите запись для добавления заключения", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void AddRecord_Click(object sender, EventArgs e)
         {
             AddRecordWindow addRecordWindow = new AddRecordWindow(this);
@@ -852,7 +867,7 @@ namespace Clinic.Windows
         }
         private void EditRecord_Click(object sender, EventArgs e)
         {
-           
+
             if (dgRecords.SelectedItem != null)
             {
                 Record selectedRecord = (Record)dgRecords.SelectedItem;
@@ -918,21 +933,16 @@ namespace Clinic.Windows
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName, D.DiagnosisName AS Diagnosis, " +
-                          "STRING_AGG(DR.Name, ', ') AS DrugNames " +
-                          "FROM Record R " +
-                          "JOIN [User] U ON R.UserID = U.UserID " +
-                          "JOIN Client C ON R.ClientID = C.ClientID " +
-                          "JOIN Diagnosis D ON R.DiagnosisID = D.DiagnosisID " +
-                          "LEFT JOIN DiagnosisDrugs DD ON D.DiagnosisID = DD.DiagnosisID " +
-                          "LEFT JOIN Drugs DR ON DD.DrugsID = DR.DrugsID " +
-                          "WHERE " +
-                          "D.DiagnosisName LIKE @searchString OR " +
-                          "R.Date LIKE @searchString OR " +
-                          "R.Time LIKE @searchString OR " +
-                          "C.FullName LIKE @searchString OR " +
-                          "U.FullName LIKE @searchString " +
-                          "GROUP BY R.RecordID, R.Date, R.Time, U.FullName, C.FullName, D.DiagnosisName";
+                    string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName " +
+                                   "FROM Record R " +
+                                   "JOIN [User] U ON R.UserID = U.UserID " +
+                                   "JOIN Client C ON R.ClientID = C.ClientID " +
+                                   "WHERE " +
+                                   "R.Date LIKE @searchString OR " +
+                                   "R.Time LIKE @searchString OR " +
+                                   "C.FullName LIKE @searchString OR " +
+                                   "U.FullName LIKE @searchString " +
+                                   "GROUP BY R.RecordID, R.Date, R.Time, U.FullName, C.FullName";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -948,9 +958,7 @@ namespace Clinic.Windows
                                     Date = Convert.ToDateTime(reader["Date"]),
                                     Time = TimeSpan.Parse(reader["Time"].ToString()),
                                     UserName = reader["UserName"].ToString(),
-                                    ClientName = reader["ClientName"].ToString(),
-                                    Diagnosis = reader["Diagnosis"].ToString(),
-                                    DrugName = reader["DrugNames"].ToString()
+                                    ClientName = reader["ClientName"].ToString()
                                 };
                                 filteredRecords.Add(record);
                             }
@@ -965,6 +973,7 @@ namespace Clinic.Windows
                 MessageBox.Show("Ошибка поиска: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         private void Search5TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string searchString = Search5TextBox.Text;
@@ -979,5 +988,41 @@ namespace Clinic.Windows
                 e.Handled = true;
             }
         }
+
+        // ОКНО ЗАКЛЮЧЕНИЯ
+
+        public void LoadConclusions()
+        {
+            List<ConclusionData> conclusions = new List<ConclusionData>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT c.RecordID, d.Name AS DrugName, diag.DiagnosisName " +
+                               "FROM Conclusion c " +
+                               "JOIN Drugs d ON c.DrugsID = d.DrugsID " +
+                               "JOIN Diagnosis diag ON c.DiagnosisID = diag.DiagnosisID";
+
+                SqlCommand command = new SqlCommand(query, connection);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ConclusionData conclusion = new ConclusionData
+                        {
+                            RecordID = (int)reader["RecordID"],
+                            DrugName = reader["DrugName"].ToString(),
+                            Diagnosis = reader["DiagnosisName"].ToString()
+                        };
+                        conclusions.Add(conclusion);
+                    }
+                }
+            }
+
+            dgList.ItemsSource = conclusions;
+        }
+
+
     }
 }

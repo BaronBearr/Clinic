@@ -13,8 +13,6 @@ namespace Clinic.AllClass
         public TimeSpan Time { get; set; }
         public string UserName { get; set; }
         public string ClientName { get; set; }
-        public string Diagnosis { get; set; }
-        public string DrugName { get; set; }
     }
 
 }

@@ -26,7 +26,6 @@ namespace Clinic.Windows
             InitializeComponent();
             this.admWindow = admWindow;
             LoadEmployees();
-            LoadDiagnoses();
             LoadClients();
         }
 
@@ -96,36 +95,7 @@ namespace Clinic.Windows
                 MessageBox.Show("Ошибка загрузки: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void LoadDiagnoses()
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string query = "SELECT DiagnosisID, DiagnosisName FROM Diagnosis";
-                    SqlCommand command = new SqlCommand(query, connection);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Diagnosis diagnosis = new Diagnosis
-                            {
-                                DiagnosisID = (int)reader["DiagnosisID"],
-                                DiagnosisName = reader["DiagnosisName"].ToString()
-                            };
-                            diagnosisComboBox.Items.Add(diagnosis);
-
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка загрузки: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+       
         private void TimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -171,8 +141,7 @@ namespace Clinic.Windows
                 if (datePicker.SelectedDate == null ||
                     string.IsNullOrWhiteSpace(timeTextBox.Text) ||
                     userComboBox.SelectedValue == null ||
-                    clientComboBox.SelectedValue == null ||
-                    diagnosisComboBox.SelectedValue == null)
+                    clientComboBox.SelectedValue == null)
                 {
                     MessageBox.Show("Заполни все поля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -214,7 +183,6 @@ namespace Clinic.Windows
                 }
 
                 int selectedClientID = (int)clientComboBox.SelectedValue;
-                int selectedDiagnosisID = (int)diagnosisComboBox.SelectedValue;
                 int minutes = (int)selectedTime.TotalMinutes;
                 int roundedMinutes = (minutes / 30) * 30;
                 selectedTime = TimeSpan.FromMinutes(roundedMinutes);
@@ -241,8 +209,8 @@ namespace Clinic.Windows
                         }
                     }
 
-                    string insertQuery = "INSERT INTO Record (Date, Time, UserID, ClientID, DiagnosisID) " +
-                                 "VALUES (@Date, @Time, @UserID, @ClientID, @DiagnosisID)";
+                    string insertQuery = "INSERT INTO Record (Date, Time, UserID, ClientID) " +
+                                 "VALUES (@Date, @Time, @UserID, @ClientID)";
 
                     using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
                     {
@@ -250,7 +218,6 @@ namespace Clinic.Windows
                         insertCommand.Parameters.AddWithValue("@Time", selectedTime);
                         insertCommand.Parameters.AddWithValue("@UserID", selectedUserID);
                         insertCommand.Parameters.AddWithValue("@ClientID", selectedClientID);
-                        insertCommand.Parameters.AddWithValue("@DiagnosisID", selectedDiagnosisID);
 
                         int rowsAffected = insertCommand.ExecuteNonQuery();
 

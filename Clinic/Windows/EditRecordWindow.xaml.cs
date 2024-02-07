@@ -23,8 +23,6 @@ namespace Clinic.Windows
         private Record selectedRecord;
         private Employee _selectedEmployee;
         private Client _selectedClient;
-        private Diagnosis _selectedDiagnosis;
-        private Drug _selectedDrug;
         private string connectionString = @"Data Source=DESKTOP-2MK3618\SQLEXPRESS02;Initial Catalog=RaionnayaPoliklinika;Integrated Security=True";
 
         public EditRecordWindow(AdmWindow admWindow, Record record)
@@ -34,7 +32,6 @@ namespace Clinic.Windows
             this.admWindow = admWindow;
             selectedRecord = record;
             LoadClients();
-            LoadDiagnoses();
             LoadEmployees();
         }
 
@@ -104,35 +101,7 @@ namespace Clinic.Windows
                 MessageBox.Show("Ошибка загрузки: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void LoadDiagnoses()
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string query = "SELECT DiagnosisID, DiagnosisName FROM Diagnosis";
-                    SqlCommand command = new SqlCommand(query, connection);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Diagnosis diagnosis = new Diagnosis
-                            {
-                                DiagnosisID = (int)reader["DiagnosisID"],
-                                DiagnosisName = reader["DiagnosisName"].ToString()
-                            };
-                            diagnosisComboBox.Items.Add(diagnosis);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка загрузки: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+       
 
         private void AddRecord_Click(object sender, RoutedEventArgs e)
         {
@@ -153,14 +122,12 @@ namespace Clinic.Windows
 
                     int selectedUserID = (int)userComboBox.SelectedValue;
                     int selectedClientID = (int)clientComboBox.SelectedValue;
-                    int selectedDiagnosisID = (int)diagnosisComboBox.SelectedValue;
 
                     string updateQuery = "UPDATE Record " +
                                          "SET Date = @Date, " +
                                          "Time = @Time, " +
                                          "UserID = @UserID, " +
-                                         "ClientID = @ClientID, " +
-                                         "DiagnosisID = @DiagnosisID " +  
+                                         "ClientID = @ClientID " +
                                          "WHERE RecordID = @RecordID";
 
                     using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
@@ -170,7 +137,6 @@ namespace Clinic.Windows
                         updateCommand.Parameters.AddWithValue("@Time", selectedTime);
                         updateCommand.Parameters.AddWithValue("@UserID", selectedUserID);
                         updateCommand.Parameters.AddWithValue("@ClientID", selectedClientID);
-                        updateCommand.Parameters.AddWithValue("@DiagnosisID", selectedDiagnosisID);
 
                         int rowsAffected = updateCommand.ExecuteNonQuery();
 
@@ -192,8 +158,6 @@ namespace Clinic.Windows
                 MessageBox.Show("Ошибка при сохранении данных: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-
 
         private void TimeTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -256,12 +220,6 @@ namespace Clinic.Windows
             if (_selectedClient != null)
             {
                 clientComboBox.SelectedItem = _selectedClient;
-            }
-
-            _selectedDiagnosis = diagnosisComboBox.Items.OfType<Diagnosis>().FirstOrDefault(dgn => dgn.DiagnosisName == selectedRecord.Diagnosis);
-            if (_selectedDiagnosis != null)
-            {
-                diagnosisComboBox.SelectedItem = _selectedDiagnosis;
             }
         }
 

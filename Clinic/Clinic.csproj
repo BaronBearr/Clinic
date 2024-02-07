@@ -73,6 +73,8 @@
     </ApplicationDefinition>
     <Compile Include="AllClass\Category.cs" />
     <Compile Include="AllClass\Client.cs" />
+    <Compile Include="AllClass\Conclusion.cs" />
+    <Compile Include="AllClass\ConclusionData.cs" />
     <Compile Include="AllClass\Diagnosis.cs" />
     <Compile Include="AllClass\Drug.cs" />
     <Compile Include="AllClass\Employee.cs" />
@@ -81,6 +83,9 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Windows\AddClientWindow.xaml.cs">
       <DependentUpon>AddClientWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddConclusionWindow.xaml.cs">
+      <DependentUpon>AddConclusionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\AddDiagnosisWindow.xaml.cs">
       <DependentUpon>AddDiagnosisWindow.xaml</DependentUpon>
@@ -140,6 +145,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Windows\AddClientWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddConclusionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

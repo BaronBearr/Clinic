@@ -1,0 +1,47 @@
+﻿<Window x:Class="Clinic.Windows.AddConclusionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Clinic.Windows"
+        mc:Ignorable="d"
+        Title="Добавить заключение" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#6DB9E5" Offset="0"/>
+                <GradientStop Color="#FFFFFF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+
+        <Label Content="ID Записи:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="txtRecordID" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding RecordID}" Style="{StaticResource MainTextBox}"/>
+
+        <Label Content="Лекарство:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cmbDrugs" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center"  DisplayMemberPath="Name" SelectedValuePath="DrugsID" Style="{StaticResource MainComboBox}"/>
+
+        <Label Content="Диагноз:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cmbDiagnosis" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" DisplayMemberPath="DiagnosisName" SelectedValuePath="DiagnosisID" Style="{StaticResource MainComboBox}"/>
+
+
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Margin="15">
+            <Button Content="Сохранить"  Width="90" Click="SaveConclusion_Click" Style="{StaticResource MainButton}"/>
+            <Button Content="Отмена"  Width="90" Click="Cancel_Click" Style="{StaticResource MainButton}"/>
+        </StackPanel>
+    </Grid>
+</Window>

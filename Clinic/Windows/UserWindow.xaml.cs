@@ -32,17 +32,16 @@ namespace Clinic.Windows
         }
 
         // ЗАПИСИ
-        private void LoadRecords()
+        public void LoadRecords()
         {
             List<Record> records = new List<Record>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName, D.DiagnosisName AS Diagnosis " +
+                string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName " +
                                "FROM Record R " +
                                "JOIN [User] U ON R.UserID = U.UserID " +
-                               "JOIN Client C ON R.ClientID = C.ClientID " +
-                               "JOIN Diagnosis D ON R.DiagnosisID = D.DiagnosisID";
+                               "JOIN Client C ON R.ClientID = C.ClientID";
 
                 SqlCommand command = new SqlCommand(query, connection);
 
@@ -60,7 +59,6 @@ namespace Clinic.Windows
                             Time = TimeSpan.Parse(reader["Time"].ToString()),
                             UserName = reader["UserName"].ToString(),
                             ClientName = reader["ClientName"].ToString(),
-                            Diagnosis = reader["Diagnosis"].ToString()
                         };
 
                         records.Add(record);
@@ -73,8 +71,10 @@ namespace Clinic.Windows
                     MessageBox.Show("Ошибка при загрузке данных: " + ex.Message);
                 }
             }
+
             dgRecords.ItemsSource = records;
         }
+
         private void LKWindow_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -150,13 +150,11 @@ namespace Clinic.Windows
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName, D.DiagnosisName AS Diagnosis " +
+                    string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName " +
                                    "FROM Record R " +
                                    "JOIN [User] U ON R.UserID = U.UserID " +
                                    "JOIN Client C ON R.ClientID = C.ClientID " +
-                                   "JOIN Diagnosis D ON R.DiagnosisID = D.DiagnosisID " +
                                    "WHERE " +
-                                   "D.DiagnosisName LIKE @searchString OR " +
                                    "R.Date LIKE @searchString OR " +
                                    "R.Time LIKE @searchString OR " +
                                    "C.FullName LIKE @searchString OR " +
@@ -176,8 +174,7 @@ namespace Clinic.Windows
                                     Date = Convert.ToDateTime(reader["Date"]),
                                     Time = TimeSpan.Parse(reader["Time"].ToString()),
                                     UserName = reader["UserName"].ToString(),
-                                    ClientName = reader["ClientName"].ToString(),
-                                    Diagnosis = reader["Diagnosis"].ToString()
+                                    ClientName = reader["ClientName"].ToString()
                                 };
                                 filteredRecords.Add(record);
                             }
@@ -192,6 +189,7 @@ namespace Clinic.Windows
                 MessageBox.Show("Error searching records: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string searchString = SearchTextBox.Text;

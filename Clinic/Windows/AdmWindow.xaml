@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Clinic.Windows"
         xmlns:Properties="clr-namespace:Clinic"
         mc:Ignorable="d"
-        Title="Окно администратора" Height="450" Width="1000">
+        Title="Окно администратора" Height="500" Width="1200">
     <Grid>
         <TabControl>
             <TabItem Header="Сотрудники">
@@ -41,12 +41,10 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"  Margin="0,3,0,2" Height="40" >
-                        <Button Width="40" Content="ЛК" Click="LKWindow_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="90" Content="Добавить" Click="AddEmployee_Click" Margin="5" Style="{StaticResource MainButton}"/>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"  Margin="0,5,0,5" Height="40" Width="1194" >
+                        <Button Width="120" Content="Добавить" Click="AddEmployee_Click" Margin="5" Style="{StaticResource MainButton}"/>
                         <Button Width="120" Content="Редактировать" Click="EditEmployee_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Удалить" Click="DeleteEmployee_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Назад" Height="30" Click="BackWindow_Click" Margin="15,0,0,0" Style="{StaticResource MainButton}"/>
+                        <Button Width="120" Content="Удалить" Click="DeleteEmployee_Click" Margin="5,5,5,5" Style="{StaticResource MainButton}"/>
                         <Label FontWeight="Bold" FontSize="16" Margin="20,0,0,0" Foreground="#2A4F6E">Категория</Label>
                         <ComboBox x:Name="categoryComboBox" Width="150" Margin="5"
                               ItemsSource="{Binding categories}" 
@@ -56,12 +54,14 @@
                               Foreground="#2A4F6E"/>
                         <Label FontWeight="Bold" FontSize="16" Margin="10,0,0,0" Foreground="#2A4F6E">Поиск</Label>
                         <TextBox x:Name="SearchTextBox" 
-                    Grid.Row="1" Grid.Column="1"
-                    Margin="10" 
-                    TextChanged="SearchTextBox_TextChanged" Width="113"
-                     PreviewTextInput="SearchTextBox_PreviewTextInput"
-                    Background="#EDEDED"
-                     Foreground="#2A4F6E"/>
+                            Grid.Row="1" Grid.Column="1"
+                            Margin="10" 
+                            TextChanged="SearchTextBox_TextChanged" Width="113"
+                             PreviewTextInput="SearchTextBox_PreviewTextInput"
+                            Background="#EDEDED"
+                             Foreground="#2A4F6E"/>
+                        <Button Width="100" Content="ЛК" Click="LKWindow_Click" Margin="65,5,5,5" Style="{StaticResource MainButton}"/>
+                        <Button Width="100" Content="Выход" Height="30" Click="BackWindow_Click" Margin="15,0,0,0" Style="{StaticResource MainButton}"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -96,19 +96,19 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,3,0,2" Height="40" Width="900">
-                        <Button Width="90" Content="Добавить" Click="AddClient_Click" Margin="5" Style="{StaticResource MainButton}"/>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        <Button Width="120" Content="Добавить" Click="AddClient_Click" Margin="200,5,5,5" Style="{StaticResource MainButton}"/>
                         <Button Width="120" Content="Редактировать" Click="EditClient_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Удалить" Click="DeleteClient_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Назад" Height="30" Click="BackWindow_Click" Margin="15,0,0,0" Style="{StaticResource MainButton}"/>
+                        <Button Width="120" Content="Удалить" Click="DeleteClient_Click" Margin="5" Style="{StaticResource MainButton}"/>
                         <Label FontWeight="Bold" FontSize="16" Margin="20,0,0,0" Foreground="#2A4F6E">Поиск</Label>
                         <TextBox x:Name="Search2TextBox" 
-                     Grid.Row="1" Grid.Column="1"
-                     Margin="10" 
-                     TextChanged="Search2TextBox_TextChanged" Width="113"
-                     PreviewTextInput="Search2TextBox_PreviewTextInput"
-                     Background="#EDEDED"
-                     Foreground="#2A4F6E"/>
+                             Grid.Row="1" Grid.Column="1"
+                             Margin="10" 
+                             TextChanged="Search2TextBox_TextChanged" Width="113"
+                             PreviewTextInput="Search2TextBox_PreviewTextInput"
+                             Background="#EDEDED"
+                             Foreground="#2A4F6E"/>
+                        <Button Width="100" Content="Выход" Height="30" Click="BackWindow_Click" Margin="250,0,0,0" Style="{StaticResource MainButton}"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -144,11 +144,10 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,3,0,2" Height="40" Width="900">
-                        <Button Width="90" Content="Добавить" Click="AddDrug_Click" Margin="5" Style="{StaticResource MainButton}"/>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        <Button Width="120" Content="Добавить" Click="AddDrug_Click" Margin="200,5,5,5" Style="{StaticResource MainButton}"/>
                         <Button Width="120" Content="Редактировать" Click="EditDrug_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Удалить" Click="DeleteDrug_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Назад" Height="30" Click="BackWindow_Click" Margin="15,0,0,0" Style="{StaticResource MainButton}"/>
+                        <Button Width="120" Content="Удалить" Click="DeleteDrug_Click" Margin="5" Style="{StaticResource MainButton}"/>
                         <Label FontWeight="Bold" FontSize="16" Margin="20,0,0,0" Foreground="#2A4F6E">Поиск</Label>
                         <TextBox x:Name="Search3TextBox" 
                              Grid.Row="1" Grid.Column="1"
@@ -157,6 +156,7 @@
                              PreviewTextInput="Search3TextBox_PreviewTextInput"
                              Background="#EDEDED"
                              Foreground="#2A4F6E"/>
+                        <Button Width="100" Content="Выход" Height="30" Click="BackWindow_Click" Margin="250,0,0,0" Style="{StaticResource MainButton}"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -192,11 +192,10 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,3,0,2" Height="40" Width="900">
-                        <Button Width="90" Content="Добавить" Click="AddDiagnosis_Click" Margin="5" Style="{StaticResource MainButton}"/>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        <Button Width="120" Content="Добавить" Click="AddDiagnosis_Click" Margin="200,5,5,5" Style="{StaticResource MainButton}"/>
                         <Button Width="120" Content="Редактировать" Click="EditDiagnosis_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Удалить" Click="DeleteDiagnosis_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Назад" Height="30" Click="BackWindow_Click" Margin="15,0,0,0" Style="{StaticResource MainButton}"/>
+                        <Button Width="120" Content="Удалить" Click="DeleteDiagnosis_Click" Margin="5" Style="{StaticResource MainButton}"/>
                         <Label FontWeight="Bold" FontSize="16" Margin="20,0,0,0" Foreground="#2A4F6E">Поиск</Label>
                         <TextBox x:Name="Search4TextBox" 
                              Grid.Row="1" Grid.Column="1"
@@ -205,6 +204,7 @@
                             PreviewTextInput="Search4TextBox_PreviewTextInput"
                              Background="#EDEDED"
                             Foreground="#2A4F6E"/>
+                        <Button Width="100" Content="Выход" Height="30" Click="BackWindow_Click" Margin="250,0,0,0" Style="{StaticResource MainButton}"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -221,6 +221,11 @@
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
                     <DataGrid CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgRecords" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Заключение" Click="ContextMenu_AddConclusion_Click"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
                                 <GradientStop Color="#6DB9E5" Offset="0"/>
@@ -228,20 +233,17 @@
                             </LinearGradientBrush>
                         </DataGrid.Background>
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" />
                             <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy\}}" />
                             <DataGridTextColumn Header="Время" Binding="{Binding Time}" />
                             <DataGridTextColumn Header="Врач" Binding="{Binding UserName}" />
                             <DataGridTextColumn Header="Пациент" Binding="{Binding ClientName}" />
-                            <DataGridTextColumn Header="Диагноз" Binding="{Binding Diagnosis}" />
-                            <DataGridTextColumn Header="Лекарство" Binding="{Binding DrugName}" />
                         </DataGrid.Columns>
-
                     </DataGrid>
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,3,0,2" Height="40" Width="900">
-                        <Button Width="90" Content="Добавить" Click="AddRecord_Click" Margin="5" Style="{StaticResource MainButton}"/>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        <Button Width="120" Content="Добавить" Click="AddRecord_Click" Margin="200,5,5,5" Style="{StaticResource MainButton}"/>
                         <Button Width="120" Content="Редактировать" Click="EditRecord_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Удалить" Click="DeleteRecord_Click" Margin="5" Style="{StaticResource MainButton}"/>
-                        <Button Width="70" Content="Назад" Height="30" Click="BackWindow_Click" Margin="15,0,0,0" Style="{StaticResource MainButton}"/>
+                        <Button Width="120" Content="Удалить" Click="DeleteRecord_Click" Margin="5" Style="{StaticResource MainButton}"/>
                         <Label FontWeight="Bold" FontSize="16" Margin="20,0,0,0" Foreground="#2A4F6E">Поиск</Label>
                         <TextBox x:Name="Search5TextBox" 
                             Grid.Row="1" Grid.Column="1"
@@ -250,10 +252,42 @@
                             PreviewTextInput="Search5TextBox_PreviewTextInput"
                             Background="#EDEDED"
                             Foreground="#2A4F6E"/>
+                        <Button Width="100" Content="Выход" Height="30" Click="BackWindow_Click" Margin="250,0,0,0" Style="{StaticResource MainButton}"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="Заключения">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                            <GradientStop Color="#6DB9E5" Offset="0"/>
+                            <GradientStop Color="#FFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="361*"/>
+                        <RowDefinition Height="45*"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgList" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                        <DataGrid.Background>
+                            <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                                <GradientStop Color="#6DB9E5" Offset="0"/>
+                                <GradientStop Color="#FFFFFF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Запись" Binding="{Binding RecordID}" />
+                            <DataGridTextColumn Header="Диагноз" Binding="{Binding Diagnosis}" />
+                            <DataGridTextColumn Header="Лекарство" Binding="{Binding DrugName}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        <Button Width="100" Content="Выход" Height="30" Click="BackWindow_Click" Margin="1050,0,0,0" Style="{StaticResource MainButton}"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>
     </Grid>
-
 </Window>

@@ -26,7 +26,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-
         </Grid.RowDefinitions>
 
         <Label Content="Дата: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
@@ -40,9 +39,6 @@
 
         <Label Content="Пациент" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
         <ComboBox x:Name="clientComboBox" DisplayMemberPath="FullName" SelectedValuePath="ClientID" SelectedValue="{Binding Path=ClientID}" Margin="5,0,0,0" Width="140" Grid.Row="3" Grid.Column="1" Style="{StaticResource MainComboBox}"/>
-
-        <Label Content="Диагноз" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="diagnosisComboBox" DisplayMemberPath="DiagnosisName" SelectedValuePath="DiagnosisID" SelectedValue="{Binding Path=DiagnosisID}" Margin="5,0,0,0" Width="140" Grid.Row="4" Grid.Column="1" Style="{StaticResource MainComboBox}"/>
 
         <StackPanel Grid.Column="1" Grid.Row="6" Orientation="Horizontal">
             <Button Content="Отмена" Width="90" Click="Cancel_Click" Style="{StaticResource MainButton}"/>
