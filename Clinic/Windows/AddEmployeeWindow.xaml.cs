@@ -126,7 +126,7 @@ namespace Clinic.Windows
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
                 textBox.Text = "+7 xxx xxx xx xx";
-                textBox.Foreground = Brushes.LightGray;
+                textBox.Foreground = Brushes.Black;
             }
         }
 

@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Clinic.Windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Регистрация" Height="450" Width="400" ResizeMode="NoResize">
+        Title="Регистрация" Height="630" Width="450" ResizeMode="NoResize">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
@@ -18,61 +19,73 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Логин:" Margin="5,5,5,5"/>
-        <TextBox Grid.Row="1"  Grid.Column="1" Name="usernameTextBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" MaxLength="30" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <Label  Content="Регистрация" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" FontSize="28" FontWeight="Bold"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Content="Пароль:" Margin="5,5,5,5"/>
-        <PasswordBox Grid.Row="2" Grid.Column="1" Name="passwordBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainPassBox}" MaxLength="30" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Content="Логин:" Margin="5,5,5,5"/>
+        <TextBox FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="1"  Grid.Column="1" Name="usernameTextBox" Margin="5,0,5,0" VerticalAlignment="Center" MaxLength="30" PreviewKeyDown="TextBox_PreviewKeyDown"/>
 
-        <Label Grid.Row="3" Grid.Column="0" Content="ФИО:" Margin="5,5,5,5"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Name="fullNameTextBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Content="Пароль:" Margin="5,5,5,5"/>
+        <PasswordBox FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Name="passwordBox" Margin="5,0,5,0" VerticalAlignment="Center" MaxLength="30" PreviewKeyDown="TextBox_PreviewKeyDown"/>
 
-        <Label Grid.Row="4" Grid.Column="0" Content="Адрес" Margin="5,5,5,5"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Name="AdressTextBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Content="ФИО:" Margin="5,5,5,5"/>
+        <TextBox FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1" Name="fullNameTextBox" Margin="5,0,5,0" VerticalAlignment="Center" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
 
-        <Label Grid.Row="5" Grid.Column="0" Content="Номер телефона:" Margin="5,5,5,5"/>
-        <TextBox Grid.Row="5" Grid.Column="1" FontSize="16" Name="phoneNumberTextBox" Margin="5,0,5,0" VerticalAlignment="Center" GotFocus="PhoneNumberTextBox_GotFocus" LostFocus="PhoneNumberTextBox_LostFocus" PreviewTextInput="PhoneNumberTextBox_PreviewTextInput" HorizontalAlignment="Left" Height="25" Width="200" PreviewKeyDown="TextBox_PreviewKeyDown">
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" Content="Адрес" Margin="5,5,5,5"/>
+        <TextBox FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1" Name="AdressTextBox" Margin="5,0,5,0" VerticalAlignment="Center" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" Content="Номер телефона:" Margin="5,5,5,5"/>
+        <TextBox FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="1" Name="phoneNumberTextBox" Margin="5,0,5,0" VerticalAlignment="Center" GotFocus="PhoneNumberTextBox_GotFocus" LostFocus="PhoneNumberTextBox_LostFocus" PreviewTextInput="PhoneNumberTextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown">
             <TextBox.Style>
-                <Style TargetType="TextBox">
+                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
                     <Setter Property="Text" Value="+7 xxx xxx xx xx"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Text, ElementName=phoneNumberTextBox}" Value="+7 xxx xxx xx-xx">
-                            <Setter Property="Foreground" Value="LightGray"/>
+                            <Setter Property="Foreground" Value="{x:Null}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </TextBox.Style>
         </TextBox>
 
-        <Label Grid.Row="6" Grid.Column="0" Content="Полис:" Margin="5,5,5,5"/>
-        <TextBox Grid.Row="6" Grid.Column="1" Name="PolisTextBox" Margin="5,0,5,0" VerticalAlignment="Center" PreviewTextInput="PolisTextBox_PreviewTextInput" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" Content="Полис:" Margin="5,5,5,5"/>
+        <TextBox FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="6" Grid.Column="1" Name="PolisTextBox" Margin="5,0,5,0" VerticalAlignment="Center" PreviewTextInput="PolisTextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown"/>
 
-        <Label Grid.Row="7" Grid.Column="0" Content="Дата рождения:" Margin="5,5,5,5"/>
-        <DatePicker Grid.Row="7" Grid.Column="1" Name="dobDatePicker" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainDatePicker}" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" Content="Дата рождения:" Margin="5,5,5,5"/>
+        <DatePicker FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="7" Grid.Column="1" Name="dobDatePicker" Margin="5,0,5,0" VerticalAlignment="Center" PreviewKeyDown="TextBox_PreviewKeyDown"/>
 
-        <Label Grid.Row="8" Grid.Column="0" Content="Пол:" Margin="5,5,5,5"/>
-        <ComboBox Grid.Row="8" Grid.Column="1" Name="genderComboBox" Margin="5,0,5,0" VerticalAlignment="Center" Loaded="genderComboBox_Loaded" HorizontalAlignment="Left" Style="{StaticResource MainComboBox}"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="8" Grid.Column="0" Content="Пол:" Margin="5,5,5,5"/>
+        <ComboBox FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="8" Grid.Column="1" Name="genderComboBox" Margin="5,0,5,0" VerticalAlignment="Center" Loaded="genderComboBox_Loaded"/>
 
-        <Label Grid.Row="9" Grid.Column="0" Content="Почта: " Margin="5,5,5,5"/>
-        <TextBox Grid.Row="9" Grid.Column="1" Name="EmailTextBox" Margin="5,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource MainTextBox}" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="9" Grid.Column="0" Content="Почта: " Margin="5,5,5,5"/>
+        <TextBox FontSize="18" Width="130" HorizontalAlignment="Left" Grid.Row="9" Grid.Column="1" Name="EmailTextBox" Margin="5,0,5,0" VerticalAlignment="Center" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
 
 
-        <StackPanel Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left"  Margin="30,20,0,115" Width="200" Height="40" >
-            <Button Content="Сохранить" Width="90" Margin="5" Click="SaveButton_Click" Style="{StaticResource MainButton}"/>
-            <Button Content="Отмена" Width="80" Margin="5" Click="CancelButton_Click" Style="{StaticResource MainButton}"/>
+        <StackPanel Margin="0,20,0,0" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Width="330" Height="50" >
+            <Button
+                Content="Сохранить"
+                Width="130"
+                Margin="20,0,0,0"
+                Click="SaveButton_Click"
+                materialDesign:ButtonAssist.CornerRadius="10"/>
+            <Button 
+                Content="Отмена"
+                Width="130"
+                Margin="30,0,0,0"
+                Click="CancelButton_Click"
+                materialDesign:ButtonAssist.CornerRadius="10"/>
         </StackPanel>
     </Grid>
 </Window>
