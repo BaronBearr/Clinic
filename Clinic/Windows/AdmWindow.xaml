@@ -21,7 +21,7 @@
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgEmployees" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgEmployees" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
                                 <GradientStop Color="#6DB9E5" Offset="0"/>
@@ -77,7 +77,7 @@
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgClients" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgClients" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
                                 <GradientStop Color="#6DB9E5" Offset="0"/>
@@ -124,7 +124,7 @@
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDrugs" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDrugs" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
                                 <GradientStop Color="#6DB9E5" Offset="0"/>
@@ -172,7 +172,7 @@
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDiagnosis" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDiagnosis" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
                                 <GradientStop Color="#6DB9E5" Offset="0"/>
@@ -220,10 +220,14 @@
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgRecords" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgRecords" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Заключение" Click="ContextMenu_AddConclusion_Click"/>
+                                <MenuItem Header="Добавить заключение" Click="ContextMenu_AddConclusion_Click">
+                                    <MenuItem.Icon>
+                                        <Image  Width="18" Height="18" Source="/Windows/plus.jpg" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Background>
@@ -240,7 +244,7 @@
                             <DataGridTextColumn Header="Пациент" Binding="{Binding ClientName}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
                         <Button Width="120" Content="Добавить" Click="AddRecord_Click" Margin="200,5,5,5" Style="{StaticResource MainButton}"/>
                         <Button Width="120" Content="Редактировать" Click="EditRecord_Click" Margin="5" Style="{StaticResource MainButton}"/>
                         <Button Width="120" Content="Удалить" Click="DeleteRecord_Click" Margin="5" Style="{StaticResource MainButton}"/>
@@ -270,7 +274,7 @@
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgList" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgList" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
                                 <GradientStop Color="#6DB9E5" Offset="0"/>

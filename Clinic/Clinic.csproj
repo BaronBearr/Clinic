@@ -243,5 +243,8 @@
   <ItemGroup>
     <Resource Include="hospital.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Windows\plus.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
