@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Clinic.Windows"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:kit="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Добавление пациента" Height="600" Width="500">
     <Grid>
@@ -36,21 +37,24 @@
         <TextBox FontSize="18" Width="200" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Name="fullNameTextBox" Margin="5" VerticalAlignment="Center" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
 
         <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Content="Дата рождения:" Margin="5"/>
-        <DatePicker FontSize="18" Width="200" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" Name="dobDatePicker" Margin="5" VerticalAlignment="Center" Height="25" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        <DatePicker FontSize="18" Width="200" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" Name="dobDatePicker" Margin="5" VerticalAlignment="Center" Height="30" PreviewKeyDown="TextBox_PreviewKeyDown"/>
 
         <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Content="Телефон:" Margin="5"/>
-        <TextBox FontSize="18" Grid.Row="2" Grid.Column="1" Name="phoneTextBox" Margin="5" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" GotFocus="PhoneNumberTextBox_GotFocus" LostFocus="PhoneNumberTextBox_LostFocus" PreviewTextInput="PhoneNumberTextBox_PreviewTextInput" PreviewKeyDown="TextBox_PreviewKeyDown">
-            <TextBox.Style>
-                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-                    <Setter Property="Text" Value="+7 xxx xxx xx xx"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Text, ElementName=phoneTextBox}" Value="+7 xxx xxx xx-xx">
-                            <Setter Property="Foreground" Value="{x:Null}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
+        <kit:MaskedTextBox 
+            FontSize="18" 
+            Grid.Row="2" 
+            Grid.Column="1"
+            Name="phoneTextBox"
+            Margin="5"
+            VerticalAlignment="Center" 
+            Width="200"
+            HorizontalAlignment="Left" 
+            Style="{StaticResource MaterialDesignTextBox}"
+            Mask="+7 000 000 00 00"
+            PromptChar="x" 
+            PreviewKeyDown="TextBox_PreviewKeyDown">
+           
+        </kit:MaskedTextBox>
 
         <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" Content="Адрес:" Margin="5"/>
         <TextBox FontSize="18" Width="200" HorizontalAlignment="Left"  Grid.Row="3" Grid.Column="1" Name="adressTextBox" Margin="5" VerticalAlignment="Center" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>

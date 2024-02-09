@@ -12,6 +12,10 @@
         <TabControl>
             <TabItem Header="Сотрудники">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0*" />
+                    </Grid.ColumnDefinitions>
                     <Grid.Background>
                         <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
                             <GradientStop Color="#6DB9E5" Offset="0"/>
@@ -22,11 +26,11 @@
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgEmployees" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgEmployees" AutoGenerateColumns="False">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
-                                <GradientStop Color="#6DB9E5" Offset="0"/>
-                                <GradientStop Color="#FFFFFF" Offset="1"/>
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
                             </LinearGradientBrush>
                         </DataGrid.Background>
                         <DataGrid.Columns>
@@ -42,7 +46,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"  Margin="0,5,0,5" Height="40" Width="1194" >
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,3" Width="1194">
                         <Button
                             Width="130" 
                             Content="Добавить" 
@@ -61,12 +65,12 @@
                             Click="DeleteEmployee_Click" 
                             Margin="10,0,0,5"
                             materialDesign:ButtonAssist.CornerRadius="10"/>
-                        <Label FontWeight="Bold" FontSize="16" Margin="20,0,0,0" Foreground="#2A4F6E">Категория</Label>
+                        <Label FontWeight="Bold" FontSize="16" Margin="20,0,0,0" Foreground="#2A4F6E" Height="38">Категория</Label>
                         <ComboBox x:Name="categoryComboBox" Width="150" Margin="5"
                               ItemsSource="{Binding categories}" 
                               DisplayMemberPath="Name_Category" 
                               SelectionChanged="CategoryComboBox_SelectionChanged"/>
-                        <Label FontWeight="Bold" FontSize="16" Margin="10,0,0,0" Foreground="#2A4F6E">Поиск</Label>
+                        <Label FontWeight="Bold" FontSize="16" Margin="10,0,0,0" Foreground="#2A4F6E" Height="36">Поиск</Label>
                         <TextBox x:Name="SearchTextBox" 
                             Grid.Row="1" Grid.Column="1"
                             Margin="10,0,0,5" 
@@ -86,13 +90,13 @@
                                 Height="30"
                                 Click="BackWindow_Click"
                                 Margin="15,0,0,5"
-                                materialDesign:ButtonAssist.CornerRadius="10">          
+                                materialDesign:ButtonAssist.CornerRadius="10">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <materialDesign:PackIcon
                                         Kind="ExitToApp"
                                         Width="15"
                                         Height="20"
-                                        Margin="0,0,5,0" />     
+                                        Margin="0,0,5,0" />
                                 <TextBlock Text="Выход" VerticalAlignment="Center" Height="23" Width="62" />
                             </StackPanel>
                         </Button>
@@ -115,8 +119,8 @@
                     <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgClients" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
-                                <GradientStop Color="#6DB9E5" Offset="0"/>
-                                <GradientStop Color="#FFFFFF" Offset="1"/>
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
                             </LinearGradientBrush>
                         </DataGrid.Background>
                         <DataGrid.Columns>
@@ -191,8 +195,8 @@
                     <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDrugs" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
-                                <GradientStop Color="#6DB9E5" Offset="0"/>
-                                <GradientStop Color="#FFFFFF" Offset="1"/>
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
                             </LinearGradientBrush>
                         </DataGrid.Background>
                         <DataGrid.Columns>
@@ -267,8 +271,8 @@
                     <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDiagnosis" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
-                                <GradientStop Color="#6DB9E5" Offset="0"/>
-                                <GradientStop Color="#FFFFFF" Offset="1"/>
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
                             </LinearGradientBrush>
                         </DataGrid.Background>
                         <DataGrid.Columns>
@@ -315,7 +319,7 @@
                             Height="30"
                             Click="BackWindow_Click"
                             Margin="230,0,0,5"
-                            materialDesign:ButtonAssist.CornerRadius="10">          
+                            materialDesign:ButtonAssist.CornerRadius="10">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <materialDesign:PackIcon
                                     Kind="ExitToApp"
@@ -345,15 +349,15 @@
                             <ContextMenu>
                                 <MenuItem Header="Добавить заключение" Click="ContextMenu_AddConclusion_Click">
                                     <MenuItem.Icon>
-                                        <Image  Width="18" Height="18" Source="/Windows/plus.jpg" />
+                                        <Image  Width="17" Height="17" Source="/Windows/plus.png" />
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
-                                <GradientStop Color="#6DB9E5" Offset="0"/>
-                                <GradientStop Color="#FFFFFF" Offset="1"/>
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
                             </LinearGradientBrush>
                         </DataGrid.Background>
                         <DataGrid.Columns>
@@ -395,7 +399,7 @@
                                 Height="30"
                                 Click="BackWindow_Click"
                                 Margin="230,0,0,5"
-                                materialDesign:ButtonAssist.CornerRadius="10">      
+                                materialDesign:ButtonAssist.CornerRadius="10">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <materialDesign:PackIcon
                                     Kind="ExitToApp"
@@ -425,8 +429,8 @@
                     <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgList" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.Background>
                             <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
-                                <GradientStop Color="#6DB9E5" Offset="0"/>
-                                <GradientStop Color="#FFFFFF" Offset="1"/>
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
                             </LinearGradientBrush>
                         </DataGrid.Background>
                         <DataGrid.Columns>

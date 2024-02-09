@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Clinic.Windows"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Личный кабинет" Height="550" Width="700" ResizeMode="NoResize">
+        Title="Личный кабинет" Height="570" Width="700" ResizeMode="NoResize">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -31,23 +31,23 @@
         </StackPanel>
 
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,5,0,0" Height="390" Width="260">
-            <Label  Grid.Row="0" Grid.Column="0" Height="25">Логин</Label>
-            <TextBox IsEnabled="False" Width="250" Name="loginTextBox"/>
-            <Label  Grid.Row="0" Grid.Column="0" Height="25">ФИО</Label>
-            <TextBox IsEnabled="False" Width="250" Name="TextBoxFullName"/>
-            <Label  Grid.Row="0" Grid.Column="0" Height="25">Должность</Label>
-            <TextBox IsEnabled="False" Width="250" Name="JobTitleTextBox"/>
-            <Label  Grid.Row="0" Grid.Column="0" Height="25">Телефон</Label>
-            <TextBox IsEnabled="False" Width="250" Name="TelephoneTextBox"/>
-            <Label  Grid.Row="0" Grid.Column="0" Height="25">Почта</Label>
-            <TextBox IsEnabled="False" Width="250" Name="emailTextBox"/>
-            <Label  Grid.Row="0" Grid.Column="0" Height="25">Дата рождения</Label>
-            <TextBox IsEnabled="False" Width="250" Name="dobTextBox"/>
-            <Label  Grid.Row="0" Grid.Column="0" Height="25">Категория</Label>
-            <TextBox IsEnabled="False" Width="250" Name="categoryTextBox"/>
+        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,5,0,0" Height="453" Width="260">
+            <Label FontSize="16" Grid.Row="0" Grid.Column="0" Height="28">Логин</Label>
+            <TextBox FontSize="18" IsEnabled="False" Width="250" Name="loginTextBox"/>
+            <Label FontSize="16" Grid.Row="0" Grid.Column="0" Height="28">ФИО</Label>
+            <TextBox FontSize="18" IsEnabled="False" Width="250" Name="TextBoxFullName"/>
+            <Label FontSize="16" Grid.Row="0" Grid.Column="0" Height="28">Должность</Label>
+            <TextBox FontSize="18" IsEnabled="False" Width="250" Name="JobTitleTextBox"/>
+            <Label FontSize="16" Grid.Row="0" Grid.Column="0" Height="28">Телефон</Label>
+            <TextBox FontSize="18" IsEnabled="False" Width="250" Name="TelephoneTextBox"/>
+            <Label FontSize="16" Grid.Row="0" Grid.Column="0" Height="28">Почта</Label>
+            <TextBox FontSize="18" IsEnabled="False" Width="250" Name="emailTextBox"/>
+            <Label FontSize="16" Grid.Row="0" Grid.Column="0" Height="28">Дата рождения</Label>
+            <TextBox FontSize="18" IsEnabled="False" Width="250" Name="dobTextBox"/>
+            <Label FontSize="16" Grid.Row="0" Grid.Column="0" Height="28">Категория</Label>
+            <TextBox FontSize="18" IsEnabled="False" Width="250" Name="categoryTextBox"/>
         </StackPanel>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left"  Margin="0,300,0,3" Width="400">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left"  Margin="0,460,0,10" Width="400">
             <Button
                 Content="Статистика"
                 Click="Statistic_Click"

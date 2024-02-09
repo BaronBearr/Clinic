@@ -27,7 +27,7 @@
             <Label FontWeight="Bold" Content="Логин:" Width="50" Height="30"/>
             <TextBox x:Name="txtUsername" 
              Width="120" 
-             Height="28" 
+             Height="30" 
              MaxLength="30" 
              FontSize="16"
              PreviewKeyDown="TextBox_PreviewKeyDown">
@@ -37,7 +37,7 @@
             <PasswordBox  
             x:Name="txtPassword" 
             Width="120"
-            Height="28" 
+            Height="30" 
             FontSize="16"
             Margin="0,0,0,0"
             MaxLength="30" 

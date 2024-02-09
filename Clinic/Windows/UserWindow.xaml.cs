@@ -27,11 +27,248 @@ namespace Clinic.Windows
         {
             InitializeComponent();
             this.userId = userId;
-            LoadRecords();
+            LoadConclusions();
             LoadDiagnoses();
+            LoadDrugs();
+            LoadRecords();
+
         }
 
-        // ЗАПИСИ
+        private void BackWindow_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            this.Close();
+            mainWindow.ShowDialog();
+        }
+        private void SearchRecords(string searchString)
+        {
+            List<Record> filteredRecords = new List<Record>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName " +
+                                   "FROM Record R " +
+                                   "JOIN [User] U ON R.UserID = U.UserID " +
+                                   "JOIN Client C ON R.ClientID = C.ClientID " +
+                                   "WHERE " +
+                                   "R.Date LIKE @searchString OR " +
+                                   "R.Time LIKE @searchString OR " +
+                                   "C.FullName LIKE @searchString OR " +
+                                   "U.FullName LIKE @searchString " +
+                                   "GROUP BY R.RecordID, R.Date, R.Time, U.FullName, C.FullName";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@searchString", "%" + searchString + "%");
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Record record = new Record
+                                {
+                                    RecordID = Convert.ToInt32(reader["RecordID"]),
+                                    Date = Convert.ToDateTime(reader["Date"]),
+                                    Time = TimeSpan.Parse(reader["Time"].ToString()),
+                                    UserName = reader["UserName"].ToString(),
+                                    ClientName = reader["ClientName"].ToString()
+                                };
+                                filteredRecords.Add(record);
+                            }
+                        }
+                    }
+                }
+
+                dgRecords.ItemsSource = filteredRecords;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка поиска: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void Search5TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchString = Search5TextBox.Text;
+            SearchRecords(searchString);
+        }
+        private void Search5TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            if ((textBox.Text + e.Text).Length > 30)
+            {
+                e.Handled = true;
+            }
+        }
+        private void Search4TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            if ((textBox.Text + e.Text).Length > 30)
+            {
+                e.Handled = true;
+            }
+        }
+        private void SearchDiagnosis(string searchString)
+        {
+            List<Diagnosis> filteredDiagnosis = new List<Diagnosis>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT DiagnosisID, DiagnosisName, Description " +
+                                   "FROM Diagnosis " +
+                                   "WHERE DiagnosisName LIKE @searchString";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@searchString", "%" + searchString + "%");
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Diagnosis diagnosis = new Diagnosis
+                                {
+                                    DiagnosisID = (int)reader["DiagnosisID"],
+                                    DiagnosisName = reader["DiagnosisName"].ToString(),
+                                    Description = reader["Description"].ToString()
+                                };
+                                filteredDiagnosis.Add(diagnosis);
+                            }
+                        }
+                    }
+                }
+
+                dgDiagnosis.ItemsSource = filteredDiagnosis;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка поиска диагноза: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void Search4TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchString = Search4TextBox.Text;
+            SearchDiagnosis(searchString);
+        }
+        private void SearchDrugs(string searchString)
+        {
+            List<Drug> filteredDrugs = new List<Drug>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM Drugs " +
+                                   "WHERE " +
+                                   "Name LIKE @searchString";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@searchString", "%" + searchString + "%");
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Drug drug = new Drug
+                                {
+                                    DrugsID = (int)reader["DrugsID"],
+                                    Name = reader["Name"].ToString(),
+                                    Description = reader["Description"].ToString()
+                                };
+                                filteredDrugs.Add(drug);
+                            }
+                        }
+                    }
+                }
+
+                dgDrugs.ItemsSource = filteredDrugs;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка поиска лекарства: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void Search3TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            if ((textBox.Text + e.Text).Length > 30)
+            {
+                e.Handled = true;
+            }
+        }
+        private void Search3TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchString = Search3TextBox.Text;
+            SearchDrugs(searchString);
+        }
+
+        public void LoadDrugs()
+        {
+            List<Drug> drugs = new List<Drug>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT * FROM Drugs";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Drug drug = new Drug
+                        {
+                            DrugsID = (int)reader["DrugsID"],
+                            Name = reader["Name"].ToString(),
+                            Description = reader["Description"].ToString()
+                        };
+                        drugs.Add(drug);
+                    }
+                }
+            }
+
+            dgDrugs.ItemsSource = drugs;
+        }
+
+        public void LoadDiagnoses()
+        {
+            List<Diagnosis> diagnoses = new List<Diagnosis>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT DiagnosisID, DiagnosisName, Description FROM Diagnosis";
+
+                SqlCommand command = new SqlCommand(query, connection);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Diagnosis diagnosis = new Diagnosis
+                        {
+                            DiagnosisID = (int)reader["DiagnosisID"],
+                            DiagnosisName = reader["DiagnosisName"].ToString(),
+                            Description = reader["Description"].ToString()
+                        };
+                        diagnoses.Add(diagnosis);
+                    }
+                }
+            }
+
+            dgDiagnosis.ItemsSource = diagnoses;
+        }
+
         public void LoadRecords()
         {
             List<Record> records = new List<Record>();
@@ -75,137 +312,17 @@ namespace Clinic.Windows
             dgRecords.ItemsSource = records;
         }
 
-        private void LKWindow_Click(object sender, RoutedEventArgs e)
+        public void LoadConclusions()
         {
-            try
-            {
-                LKWindow lKWindow = new LKWindow(userId);
-                lKWindow.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Произошла ошибка: " + ex.Message);
-            }
-        }
-
-        private void DeleteRecord_Click(object sender, RoutedEventArgs e)
-        {
-            if (dgRecords.SelectedItem != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        Record selectedRecord = (Record)dgRecords.SelectedItem;
-
-                        using (SqlConnection connection = new SqlConnection(connectionString))
-                        {
-                            connection.Open();
-
-                            string deleteQuery = "DELETE FROM Record WHERE RecordID = @RecordID";
-                            using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
-                            {
-                                deleteCommand.Parameters.AddWithValue("@RecordID", selectedRecord.RecordID);
-                                int rowsAffected = deleteCommand.ExecuteNonQuery();
-
-                                if (rowsAffected > 0)
-                                {
-                                    MessageBox.Show("Запись успешно удалена", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                                    LoadRecords();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Не удалось удалить запись", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Произошла ошибка при удалении записи: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Выберите запись для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
-        private void BackWindow_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mainWindow = new MainWindow();
-            this.Close();
-            mainWindow.ShowDialog();
-        }
-
-        private void SearchRecords(string searchString)
-        {
-            List<Record> filteredRecords = new List<Record>();
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName " +
-                                   "FROM Record R " +
-                                   "JOIN [User] U ON R.UserID = U.UserID " +
-                                   "JOIN Client C ON R.ClientID = C.ClientID " +
-                                   "WHERE " +
-                                   "R.Date LIKE @searchString OR " +
-                                   "R.Time LIKE @searchString OR " +
-                                   "C.FullName LIKE @searchString OR " +
-                                   "U.FullName LIKE @searchString";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@searchString", "%" + searchString + "%");
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Record record = new Record
-                                {
-                                    RecordID = Convert.ToInt32(reader["RecordID"]),
-                                    Date = Convert.ToDateTime(reader["Date"]),
-                                    Time = TimeSpan.Parse(reader["Time"].ToString()),
-                                    UserName = reader["UserName"].ToString(),
-                                    ClientName = reader["ClientName"].ToString()
-                                };
-                                filteredRecords.Add(record);
-                            }
-                        }
-                    }
-                }
-
-                dgRecords.ItemsSource = filteredRecords;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error searching records: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string searchString = SearchTextBox.Text;
-            SearchRecords(searchString);
-        }
-
-        // ДИАГНОЗЫ
-
-        public void LoadDiagnoses()
-        {
-            List<Diagnosis> diagnoses = new List<Diagnosis>();
+            List<ConclusionData> conclusions = new List<ConclusionData>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "SELECT DiagnosisID, DiagnosisName FROM Diagnosis";
+                string query = "SELECT c.RecordID, d.Name AS DrugName, diag.DiagnosisName " +
+                               "FROM Conclusion c " +
+                               "JOIN Drugs d ON c.DrugsID = d.DrugsID " +
+                               "JOIN Diagnosis diag ON c.DiagnosisID = diag.DiagnosisID";
 
                 SqlCommand command = new SqlCommand(query, connection);
 
@@ -213,108 +330,25 @@ namespace Clinic.Windows
                 {
                     while (reader.Read())
                     {
-                        Diagnosis diagnosis = new Diagnosis
+                        ConclusionData conclusion = new ConclusionData
                         {
-                            DiagnosisID = (int)reader["DiagnosisID"],
-                            DiagnosisName = reader["DiagnosisName"].ToString()
+                            RecordID = (int)reader["RecordID"],
+                            DrugName = reader["DrugName"].ToString(),
+                            Diagnosis = reader["DiagnosisName"].ToString()
                         };
-                        diagnoses.Add(diagnosis);
+                        conclusions.Add(conclusion);
                     }
                 }
             }
 
-            dgDiagnosis.ItemsSource = diagnoses;
+            dgList.ItemsSource = conclusions;
         }
-        private void SearchDiagnosis(string searchString)
+
+        private void ContextMenu_AddConclusion_Click(object sender, RoutedEventArgs e)
         {
-            List<Diagnosis> filteredDiagnosis = new List<Diagnosis>();
 
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string query = "SELECT DiagnosisID, DiagnosisName " +
-                                   "FROM Diagnosis " +
-                                   "WHERE DiagnosisName LIKE @searchString";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@searchString", "%" + searchString + "%");
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Diagnosis diagnosis = new Diagnosis
-                                {
-                                    DiagnosisID = (int)reader["DiagnosisID"],
-                                    DiagnosisName = reader["DiagnosisName"].ToString()
-                                };
-                                filteredDiagnosis.Add(diagnosis);
-                            }
-                        }
-                    }
-                }
-
-                dgDiagnosis.ItemsSource = filteredDiagnosis;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка поиска диагноза: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        private void Search2TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string searchString = Search2TextBox.Text;
-            SearchDiagnosis(searchString);
         }
 
-        private void DeleteDiagnosis_Click(object sender, RoutedEventArgs e)
-        {
-            if (dgDiagnosis.SelectedItem != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите удалить этот диагноз?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        Diagnosis selectedDiagnosis = (Diagnosis)dgDiagnosis.SelectedItem;
-
-                        using (SqlConnection connection = new SqlConnection(connectionString))
-                        {
-                            connection.Open();
-
-                            string deleteQuery = "DELETE FROM Diagnosis WHERE DiagnosisID = @DiagnosisID";
-                            using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
-                            {
-                                deleteCommand.Parameters.AddWithValue("@DiagnosisID", selectedDiagnosis.DiagnosisID);
-                                int rowsAffected = deleteCommand.ExecuteNonQuery();
-
-                                if (rowsAffected > 0)
-                                {
-                                    MessageBox.Show("Диагноз успешно удален", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                                    LoadDiagnoses();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Не удалось удалить диагноз", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Произошла ошибка при удалении диагноза: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Выберите диагноз для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
     }
 
 }
