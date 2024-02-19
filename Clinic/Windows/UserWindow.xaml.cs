@@ -344,9 +344,17 @@ namespace Clinic.Windows
             dgList.ItemsSource = conclusions;
         }
 
-        private void ContextMenu_AddConclusion_Click(object sender, RoutedEventArgs e)
+        private void LKWindow_Click(object sender, EventArgs e)
         {
-
+             try
+            {
+                LKWindow lKWindow = new LKWindow(userId);
+                lKWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка: " + ex.Message);
+            }
         }
 
     }

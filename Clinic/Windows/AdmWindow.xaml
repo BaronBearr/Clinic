@@ -33,7 +33,13 @@
                                 <GradientStop Color="#FFFFFF" Offset="1.2"/>
                             </LinearGradientBrush>
                         </DataGrid.Background>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Открыть личный кабинет" Click="OpenPersonalCabinet_Click"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding UserID}" />
                             <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" />
                             <DataGridTextColumn Header="Логин" Binding="{Binding Login}" />
                             <DataGridTextColumn Header="Дата рождения" Binding="{Binding DoB, StringFormat=\{0:dd.MM.yyyy\}}" />
@@ -123,7 +129,14 @@
                                 <GradientStop Color="#FFFFFF" Offset="1.2"/>
                             </LinearGradientBrush>
                         </DataGrid.Background>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Открыть личный кабинет" Click="OpenClientCabinet_Click"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ClientID}" />
+
                             <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" />
                             <DataGridTextColumn Header="Дата рождения" Binding="{Binding DoB, StringFormat=\{0:dd.MM.yyyy\}}" />
                             <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" />

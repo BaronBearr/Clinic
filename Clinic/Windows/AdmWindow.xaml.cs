@@ -20,6 +20,8 @@ namespace Clinic.Windows
     public partial class AdmWindow : Window
     {
         private ObservableCollection<Employee> employeesList;
+        private ObservableCollection<Client> clientsList;
+
         private string connectionString = @"Data Source=DESKTOP-2MK3618\SQLEXPRESS02;Initial Catalog=RaionnayaPoliklinika;Integrated Security=True";
 
         private int userId;
@@ -37,13 +39,50 @@ namespace Clinic.Windows
             LoadConclusions();
         }
         // ОКНО СОТРУДНИКИ
+
+        private void OpenPersonalCabinet_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+            Employee selectedEmployee = (Employee)dgEmployees.SelectedItem;
+
+            if (selectedEmployee != null)
+            {
+                if (EmployeeExists(selectedEmployee.UserID))
+                {
+                    OpenPersonalCabinet(selectedEmployee.UserID);
+                }
+                else
+                {
+                    MessageBox.Show("Данные пользователя не найдены");
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }
+        }
+
+        private bool EmployeeExists(int userId)
+        {
+            return employeesList.Any(employee => employee.UserID.Equals(userId));
+        }
+
+        private void OpenPersonalCabinet(int userId)
+        {
+            LKWindow personalCabinetWindow = new LKWindow(userId);
+            personalCabinetWindow.ShowDialog();
+        }
+
         public void LoadEmployees()
         {
             employeesList = new ObservableCollection<Employee>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT U.FullName, U.DoB, U.Email, JT.Name AS JobTitle, U.Phone, R.Name AS Role, U.Expirience, C.Name AS Category, U.Login " +
+                string query = "SELECT U.UserID, U.FullName, U.DoB, U.Email, JT.Name AS JobTitle, U.Phone, R.Name AS Role, U.Expirience, C.Name AS Category, U.Login " +
                                "FROM [User] U " +
                                "JOIN JobTitle JT ON U.JobTitleID = JT.JobTitleID " +
                                "JOIN Role R ON U.RoleID = R.RoleID " +
@@ -60,6 +99,7 @@ namespace Clinic.Windows
                     {
                         Employee employee = new Employee
                         {
+                            UserID = reader.GetInt32(0),
                             FullName = reader["FullName"].ToString(),
                             DoB = Convert.ToDateTime(reader["DoB"]),
                             Email = reader["Email"].ToString(),
@@ -436,6 +476,41 @@ namespace Clinic.Windows
                 MessageBox.Show("Выберите клиента для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+        private void OpenClientCabinet_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+            Client selectedClient = (Client)dgClients.SelectedItem;
+
+            if (selectedClient != null)
+            {
+                if (ClientExists(selectedClient.ClientID))
+                {
+                    OpenClientCabinet(selectedClient.ClientID);
+                }
+                else
+                {
+                    MessageBox.Show("Данные пациента не найдены");
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }
+        }
+
+        private bool ClientExists(int clientId)
+        {
+            return clientsList.Any(client => client.ClientID.Equals(clientId));
+        }
+
+        private void OpenClientCabinet(int clientId)
+        {
+            LKUserWindow personalCabinettWindow = new LKUserWindow(clientId);
+            personalCabinettWindow.ShowDialog();
+        }
 
         private void SearchClients(string searchString)
         {
@@ -509,7 +584,8 @@ namespace Clinic.Windows
         }
         public void LoadClients()
         {
-            List<Client> clients = new List<Client>();
+
+           clientsList = new ObservableCollection<Client>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -536,12 +612,12 @@ namespace Clinic.Windows
                             Login = reader["Login"].ToString(),
                             GenderName = reader["GenderName"].ToString()
                         };
-                        clients.Add(client);
+                        clientsList.Add(client);
                     }
                 }
             }
 
-            dgClients.ItemsSource = clients;
+            dgClients.ItemsSource = clientsList;
         }
 
         // ОКНО ЛЕКАРСТВА

@@ -36,6 +36,7 @@ namespace Clinic.Windows
                 e.Handled = true;
 
             }
+
         }
         private void AddDrug_Click(object sender, RoutedEventArgs e)
         {

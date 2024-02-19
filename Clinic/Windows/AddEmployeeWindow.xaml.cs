@@ -18,8 +18,10 @@ using Clinic.Windows;
 
 namespace Clinic.Windows
 {
+
     public partial class AddEmployeeWindow : Window
     {
+        private static readonly Regex onlyLetters = new Regex("[а-яА-Я]|[a-zA-Z]+");
         private AdmWindow admWindow;
         private string connectionString = @"Data Source=DESKTOP-2MK3618\SQLEXPRESS02;Initial Catalog=RaionnayaPoliklinika;Integrated Security=True";
 

@@ -6,8 +6,60 @@
         xmlns:local="clr-namespace:Clinic.Windows"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Окно пациента" Height="450" Width="800">
+        Title="Окно пациента" Height="500" Width="1200">
     <Grid>
-        <Button Width="40" Height="40" Content="ЛК" Click="LKWindow_Click" Margin="5"/>
+        <TabControl>
+            <TabItem Header="Мои записи">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                            <GradientStop Color="#6DB9E5" Offset="0"/>
+                            <GradientStop Color="#FFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="361*"/>
+                        <RowDefinition Height="45*"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDiagnosis" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                        <DataGrid.Background>
+                            <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy\}}" />
+                            <DataGridTextColumn Header="Время" Binding="{Binding Time}" />
+                            <DataGridTextColumn Header="Врач" Binding="{Binding UserName}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        <Button 
+                            Width="100"
+                            Content="ЛК" 
+                            Click="LKWindow_Click" 
+                            Margin="930,0,0,5" 
+                            materialDesign:ButtonAssist.CornerRadius="10"/>
+                        <Button
+                            Width="100"
+                            Height="30"
+                            Click="BackWindow_Click"
+                            Margin="15,0,0,5"
+                            materialDesign:ButtonAssist.CornerRadius="10">
+                            
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon
+                                    Kind="ExitToApp"
+                                    Width="16"
+                                    Height="22"
+                                    Margin="0,0,5,0" />
+                                <TextBlock Text="Выход" VerticalAlignment="Center" Width="59" Height="22" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

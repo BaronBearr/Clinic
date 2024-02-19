@@ -76,7 +76,6 @@
             PreviewKeyDown="TextBox_PreviewKeyDown"
             Mask="+7 000 000 00 00"
             PromptChar="x">
-           
         </kit:MaskedTextBox>
 
         <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="9" Grid.Column="0" Content="Стаж:" Margin="5"/>

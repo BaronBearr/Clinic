@@ -24,7 +24,7 @@
                     <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgRecords" AutoGenerateColumns="False" Grid.ColumnSpan="2">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Добавить заключение" Click="ContextMenu_AddConclusion_Click">
+                                <MenuItem Header="Добавить заключение">
                                     <MenuItem.Icon>
                                         <Image  Width="17" Height="17" Source="/Windows/plus.png" />
                                     </MenuItem.Icon>
@@ -54,12 +54,19 @@
                 Height="25"
                 TextChanged="Search5TextBox_TextChanged" Width="113"
                 PreviewTextInput="Search5TextBox_PreviewTextInput"/>
+                        <Button 
+                            Width="100"
+                            Content="ЛК" 
+                            Click="LKWindow_Click" 
+                            Margin="160,0,0,5" 
+                            materialDesign:ButtonAssist.CornerRadius="10"/>
                         <Button
-                    Width="100"
-                    Height="30"
-                    Click="BackWindow_Click"
-                    Margin="267,0,0,5"
-                    materialDesign:ButtonAssist.CornerRadius="10">
+                            Width="100"
+                            Height="30"
+                            Click="BackWindow_Click"
+                            Margin="10,0,0,5"
+                            materialDesign:ButtonAssist.CornerRadius="10">
+                            
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <materialDesign:PackIcon
                         Kind="ExitToApp"
