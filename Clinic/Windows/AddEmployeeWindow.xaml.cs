@@ -18,8 +18,10 @@ using Clinic.Windows;
 
 namespace Clinic.Windows
 {
+
     public partial class AddEmployeeWindow : Window
     {
+        private static readonly Regex onlyLetters = new Regex("[а-яА-Я]|[a-zA-Z]+");
         private AdmWindow admWindow;
         private string connectionString = @"Data Source=DESKTOP-2MK3618\SQLEXPRESS02;Initial Catalog=RaionnayaPoliklinika;Integrated Security=True";
 
@@ -110,67 +112,12 @@ namespace Clinic.Windows
             }
         }
 
-        private void phoneTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "+7 xxx xxx xx xx")
-            {
-                textBox.Text = "";
-                textBox.Foreground = Brushes.Black;
-            }
-        }
-
-        private void phoneTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "+7 xxx xxx xx xx";
-                textBox.Foreground = Brushes.LightGray;
-            }
-        }
-
-
         private void experienceTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
             if (!char.IsDigit(e.Text, 0))
             {
                 e.Handled = true; 
-            }
-        }
-
-
-        private void phoneTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            try
-            {
-                TextBox textBox = (TextBox)sender;
-
-                if (char.IsDigit(e.Text, 0) && textBox.Text.Length < 16)
-                {
-                    if (textBox.Text.Length == 0)
-                    {
-                        textBox.Text = "+7 ";
-                        textBox.CaretIndex = textBox.Text.Length;
-                    }
-                    else if (textBox.Text.Length == 6 || textBox.Text.Length == 10 || textBox.Text.Length == 13)
-                    {
-                        textBox.Text += " " + e.Text;
-                        textBox.CaretIndex = textBox.Text.Length;
-                    }
-                    else
-                    {
-                        textBox.Text += e.Text;
-                        textBox.CaretIndex = textBox.Text.Length;
-                    }
-                }
-
-                e.Handled = true;
-            }
-            catch (Exception ex)
-            {
-
             }
         }
 
@@ -223,13 +170,23 @@ namespace Clinic.Windows
                     return;
                 }
 
-                if (fullName.Contains(" ") && fullName.Length >= 10)
+                if (fullName.Contains(" "))
                 {
+                    string[] nameParts = fullName.Split(' ');
 
+                    if (nameParts.Length >= 2 && nameParts[0].Length >= 2 && nameParts[1].Length >= 4)
+                    {
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Имя должно иметь минимум 2 символа, фамилия должна иметь минимум 4 символа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Введи фамилию и имя", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Введи фамилию и имя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -274,9 +231,9 @@ namespace Clinic.Windows
                     return;
                 }
 
-                if (password.Length < 4)
+                if (password.Length < 4 || !ContainsDigit(password) || !ContainsUppercase(password) || CountLowercaseLetters(password) < 2)
                 {
-                    MessageBox.Show("Пароль должен быть больше 4 символов.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Пароль должен быть больше 4 символов и соответствовать условиям:\n (минимум 1 цифра, 1 заглавная буква, 2 строчные буквы).", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -409,6 +366,42 @@ namespace Clinic.Windows
             }
         }
 
+        private bool ContainsDigit(string password)
+        {
+            foreach (char c in password)
+            {
+                if (char.IsDigit(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool ContainsUppercase(string password)
+        {
+            foreach (char c in password)
+            {
+                if (char.IsUpper(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private int CountLowercaseLetters(string password)
+        {
+            int count = 0;
+            foreach (char c in password)
+            {
+                if (char.IsLower(c))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
         private int GetSelectedRoleId(string roleName)
         {
             int roleId = 0;

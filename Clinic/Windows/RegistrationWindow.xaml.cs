@@ -34,49 +34,6 @@ namespace Clinic.Windows
 
             }
         }
-        private void PhoneNumberTextBox_GotFocus(object sender, RoutedEventArgs e)
-            {
-                TextBox textBox = (TextBox)sender;
-                if (textBox.Text == "+7 xxx xxx xx xx")
-                {
-                    textBox.Text = "";
-                    textBox.Foreground = Brushes.Black;
-                }
-            }
-        private void PhoneNumberTextBox_LostFocus(object sender, RoutedEventArgs e)
-            {
-                TextBox textBox = (TextBox)sender;
-                if (string.IsNullOrWhiteSpace(textBox.Text))
-                {
-                    textBox.Text = "+7 xxx xxx xx xx";
-                    textBox.Foreground = Brushes.LightGray;
-                }
-            }
-        private void PhoneNumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-
-            if (char.IsDigit(e.Text, 0) && textBox.Text.Length < 16)
-            {
-                if (textBox.Text.Length == 0)
-                {
-                    textBox.Text = "+7 ";
-                    textBox.CaretIndex = textBox.Text.Length;
-                }
-                else if (textBox.Text.Length == 6 || textBox.Text.Length == 10 || textBox.Text.Length == 13)
-                {
-                    textBox.Text += " " + e.Text;
-                    textBox.CaretIndex = textBox.Text.Length;
-                }
-                else
-                {
-                    textBox.Text += e.Text;
-                    textBox.CaretIndex = textBox.Text.Length; 
-                }
-            }
-
-            e.Handled = true; 
-        }
         private void LoadGenders()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -175,13 +132,23 @@ namespace Clinic.Windows
                 return;
             }
 
-            if (fullName.Contains(" ") && fullName.Length >= 10)
+            if (fullName.Contains(" "))
             {
+                string[] nameParts = fullName.Split(' ');
 
+                if (nameParts.Length >= 2 && nameParts[0].Length >= 2 && nameParts[1].Length >= 4)
+                {
+
+                }
+                else
+                {
+                    MessageBox.Show("Имя должно иметь минимум 2 символа, фамилия должна иметь минимум 4 символа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
             else
-            {   
-                MessageBox.Show("Введи фамилию и имя", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            {
+                MessageBox.Show("Введи фамилию и имя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -237,6 +204,8 @@ namespace Clinic.Windows
                 return; 
             }
 
+
+
             if (genderComboBox.SelectedIndex == -1)
             {
                 MessageBox.Show("Выберите ваш пол", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -264,6 +233,12 @@ namespace Clinic.Windows
             if (!Regex.IsMatch(policyNumber, policyPattern))
             {
                 MessageBox.Show("Некорректный формат номера полиса. Введите номер в формате xxxx xxxx xxxx xxxx", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (password.Length < 4 || !ContainsDigit(password) || !ContainsUppercase(password) || CountLowercaseLetters(password) < 2)
+            {
+                MessageBox.Show("Пароль должен быть больше 4 символов и соответствовать условиям:\n (минимум 1 цифра, 1 заглавная буква, 2 строчные буквы).", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -390,5 +365,40 @@ namespace Clinic.Windows
         {
             this.Close();
         }
+        private bool ContainsDigit(string password)
+        {
+            foreach (char c in password)
+            {
+                if (char.IsDigit(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool ContainsUppercase(string password)
+        {
+            foreach (char c in password)
+            {
+                if (char.IsUpper(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private int CountLowercaseLetters(string password)
+        {
+            int count = 0;
+            foreach (char c in password)
+            {
+                if (char.IsLower(c))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
     }
 }

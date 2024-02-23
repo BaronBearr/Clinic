@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Clinic.Windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="Редактирование лекарства" Height="450" Width="800">
     <Grid>
@@ -15,22 +16,34 @@
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-            <Label Grid.Row="0" Content="Название:" Margin="5" Width="70"/>
-            <TextBox Grid.Row="0" Name="nameTextBox" Margin="5" VerticalAlignment="Center" Width="300" Style="{StaticResource MainTextBox}" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+            <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Content="Название:" Margin="5" Width="70"/>
+            <TextBox FontSize="18" Grid.Row="0" Name="nameTextBox" Margin="5" VerticalAlignment="Center" Width="300" MaxLength="200" PreviewKeyDown="TextBox_PreviewKeyDown"/>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Row="1">
-            <Label Grid.Row="1" Content="Описание:" Margin="5"/>
-            <TextBox Grid.Row="1" Name="descriptionTextBox" Margin="20,0,0,0" VerticalAlignment="Center" Width="600" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Style="{StaticResource MainTextBox}" MaxLength="250" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+            <Label FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Content="Описание:" Margin="5"/>
+            <TextBox FontSize="18" Grid.Row="1" Name="descriptionTextBox" Margin="20,0,0,0" VerticalAlignment="Center" Width="600" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Style="{StaticResource MaterialDesignOutlinedTextBox}" MaxLength="250" PreviewKeyDown="TextBox_PreviewKeyDown"/>
         </StackPanel>
 
-
-        <Button Grid.Row="2" Width="90" HorizontalAlignment="Left" Content="Сохранить" Click="AddDrug_Click" Margin="20" Style="{StaticResource MainButton}"/>
+        <StackPanel Grid.Row="2" Width="315" Height="100" VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal" Margin="15,0,0,0">
+            <Button 
+                Width="130" 
+                HorizontalAlignment="Left" 
+                Content="Сохранить"
+                Click="AddDrug_Click" 
+                materialDesign:ButtonAssist.CornerRadius="10"/>
+            <Button 
+                Width="130" 
+                Content="Отмена" 
+                Click="Cancel_Click"
+                Margin="20,0,0,0"
+                materialDesign:ButtonAssist.CornerRadius="10"/>
+        </StackPanel>
     </Grid>
 </Window>

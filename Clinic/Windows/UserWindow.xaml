@@ -4,60 +4,240 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Clinic.Windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Окно сотрудника" Height="450" Width="800">
+        Title="Окно сотрудника" Height="500" Width="1200">
     <Grid>
         <TabControl>
             <TabItem Header="Записи">
                 <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                            <GradientStop Color="#6DB9E5" Offset="0"/>
+                            <GradientStop Color="#FFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid Background="Gray" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" x:Name="dgRecords" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgRecords" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Добавить заключение">
+                                    <MenuItem.Icon>
+                                        <Image  Width="17" Height="17" Source="/Windows/plus.png" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Background>
+                            <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" />
                             <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy\}}" />
                             <DataGridTextColumn Header="Время" Binding="{Binding Time}" />
                             <DataGridTextColumn Header="Врач" Binding="{Binding UserName}" />
-                            <DataGridTextColumn Header="Клиент" Binding="{Binding ClientName}" />
-                            <DataGridTextColumn Header="Диагноз" Binding="{Binding Diagnosis}" />
+                            <DataGridTextColumn Header="Пациент" Binding="{Binding ClientName}" />
                         </DataGrid.Columns>
                     </DataGrid>
-
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"  Margin="0,3,0,2" Height="40" Width="450">
-                        <Button Width="40" Content="ЛК" Click="LKWindow_Click" Margin="5"/>
-                        <Button Width="70" Content="Удалить" Click="DeleteRecord_Click" Margin="5"/>
-                        <Button Width="70" Content="Назад" Height="30" Click="BackWindow_Click" Margin="15,0,0,0"/>
-                       
-                        <Label FontWeight="Bold" FontSize="16" Margin="10,0,0,0">Поиск</Label>
-                        <TextBox x:Name="SearchTextBox" 
-                    Grid.Row="1" Grid.Column="1"
-                    Margin="10" 
-                    TextChanged="SearchTextBox_TextChanged" Width="113"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        
+                        <Label FontWeight="Bold" FontSize="16" Margin="600,0,0,0" Foreground="#2A4F6E">Поиск</Label>
+                        <TextBox x:Name="Search5TextBox" 
+                Grid.Row="1" Grid.Column="1"
+                Margin="10,0,0,5"
+                Height="25"
+                TextChanged="Search5TextBox_TextChanged" Width="113"
+                PreviewTextInput="Search5TextBox_PreviewTextInput"/>
+                        <Button 
+                            Width="100"
+                            Content="ЛК" 
+                            Click="LKWindow_Click" 
+                            Margin="160,0,0,5" 
+                            materialDesign:ButtonAssist.CornerRadius="10"/>
+                        <Button
+                            Width="100"
+                            Height="30"
+                            Click="BackWindow_Click"
+                            Margin="10,0,0,5"
+                            materialDesign:ButtonAssist.CornerRadius="10">
+                            
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon
+                        Kind="ExitToApp"
+                        Width="16"
+                        Height="22"
+                        Margin="0,0,5,0" />
+                                <TextBlock Text="Выход" VerticalAlignment="Center" Width="59" Height="22" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </TabItem>
+
             <TabItem Header="Диагнозы">
                 <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                            <GradientStop Color="#6DB9E5" Offset="0"/>
+                            <GradientStop Color="#FFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="361*"/>
                         <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
-                    <DataGrid Background="Gray" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDiagnosis" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDiagnosis" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                        <DataGrid.Background>
+                            <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Лекарство" Binding="{Binding DrugName}" />
-                            <DataGridTextColumn Header="Диагноз" Binding="{Binding DiagnosisName}" />
+                            <DataGridTextColumn Header="Название" Binding="{Binding DiagnosisName}" />
+                            <DataGridTemplateColumn Header="Описание">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100">
+                                            <TextBox Text="{Binding Description}" IsReadOnly="True"/>
+                                        </ScrollViewer>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-
-                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,3,0,2" Height="40" Width="400">
-                        <Button Width="70" Content="Удалить" Click="DeleteDiagnosis_Click" Margin="5"/>
-                        <Button Width="70" Content="Назад" Height="30" Click="BackWindow_Click" Margin="15,0,0,0"/>
-                        <Label FontWeight="Bold" FontSize="16" Margin="20,0,0,0">Поиск</Label>
-                        <TextBox x:Name="Search2TextBox" 
-Grid.Row="1" Grid.Column="1"
-Margin="10" 
-TextChanged="Search2TextBox_TextChanged" Width="113"/>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                       
+                        <Label FontWeight="Bold" FontSize="16" Margin="600,0,0,0" Foreground="#2A4F6E">Поиск</Label>
+                        <TextBox x:Name="Search4TextBox" 
+                 Grid.Row="1" Grid.Column="1"
+                 Margin="10,0,0,5"
+                 Height="25"
+                 TextChanged="Search4TextBox_TextChanged" Width="113"
+                PreviewTextInput="Search4TextBox_PreviewTextInput"/>
+                        <Button
+                Width="100"
+                Height="30"
+                Click="BackWindow_Click"
+                Margin="267,0,0,5"
+                materialDesign:ButtonAssist.CornerRadius="10">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon
+                        Kind="ExitToApp"
+                        Width="16"
+                        Height="22"
+                        Margin="0,0,5,0" />
+                                <TextBlock Text="Выход" VerticalAlignment="Center" Width="59" Height="22" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Лекарства">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                            <GradientStop Color="#6DB9E5" Offset="0"/>
+                            <GradientStop Color="#FFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="361*"/>
+                        <RowDefinition Height="45*"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgDrugs" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                        <DataGrid.Background>
+                            <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" />
+                            <DataGridTemplateColumn Header="Описание">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100">
+                                            <TextBox Text="{Binding Description}" IsReadOnly="True"/>
+                                        </ScrollViewer>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        <Label FontWeight="Bold" FontSize="16" Margin="600,0,0,0" Foreground="#2A4F6E">Поиск</Label>
+                        <TextBox x:Name="Search3TextBox" 
+                 Grid.Row="1" Grid.Column="1"
+                 Margin="10,0,0,5"
+                 Height="25"
+                 TextChanged="Search3TextBox_TextChanged" Width="113"
+                 PreviewTextInput="Search3TextBox_PreviewTextInput"/>
+                        <Button
+                Width="100"
+                Height="30"
+                Click="BackWindow_Click"
+                Margin="267,0,0,5"
+                materialDesign:ButtonAssist.CornerRadius="10">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon
+                        Kind="ExitToApp"
+                        Width="16"
+                        Height="22"
+                        Margin="0,0,5,0" />
+                                <TextBlock Text="Выход" VerticalAlignment="Center" Width="59" Height="22" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Заключения">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                            <GradientStop Color="#6DB9E5" Offset="0"/>
+                            <GradientStop Color="#FFFFFF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="361*"/>
+                        <RowDefinition Height="45*"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Grid.Row="0" Grid.Column="0" x:Name="dgList" AutoGenerateColumns="False" Grid.ColumnSpan="2">
+                        <DataGrid.Background>
+                            <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                                <GradientStop Color="#6DB9E5" Offset="0.3"/>
+                                <GradientStop Color="#FFFFFF" Offset="1.2"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Запись" Binding="{Binding RecordID}" />
+                            <DataGridTextColumn Header="Диагноз" Binding="{Binding Diagnosis}" />
+                            <DataGridTextColumn Header="Лекарство" Binding="{Binding DrugName}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
+                        <Button
+                    Width="100"
+                    Height="30"
+                    Click="BackWindow_Click"
+                    Margin="1050,0,0,5"
+                    materialDesign:ButtonAssist.CornerRadius="10">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <materialDesign:PackIcon
+                        Kind="ExitToApp"
+                        Width="16"
+                        Height="22"
+                        Margin="0,0,5,0" />
+                                <TextBlock Text="Выход" VerticalAlignment="Center" Width="59" Height="22" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </TabItem>

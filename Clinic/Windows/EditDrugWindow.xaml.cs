@@ -36,6 +36,7 @@ namespace Clinic.Windows
                 e.Handled = true;
 
             }
+
         }
         private void AddDrug_Click(object sender, RoutedEventArgs e)
         {
@@ -86,6 +87,11 @@ namespace Clinic.Windows
             {
                 MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

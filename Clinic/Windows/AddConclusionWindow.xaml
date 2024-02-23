@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Clinic.Windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="Добавить заключение" Height="450" Width="800"> 
     <Grid>
@@ -14,34 +15,44 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
 
-        <Label Content="ID Записи:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-        <TextBox x:Name="txtRecordID" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding RecordID}" Style="{StaticResource MainTextBox}"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Content="ID Записи:" Grid.Row="0" Grid.Column="0"/>
+        <TextBox FontSize="18" Width="200" HorizontalAlignment="Left" x:Name="txtRecordID" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding RecordID}"/>
 
-        <Label Content="Лекарство:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="cmbDrugs" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center"  DisplayMemberPath="Name" SelectedValuePath="DrugsID" Style="{StaticResource MainComboBox}"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Лекарство:" Grid.Row="1" Grid.Column="0"/>
+        <ComboBox FontSize="18" Width="200" HorizontalAlignment="Left" x:Name="cmbDrugs" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center"  DisplayMemberPath="Name" SelectedValuePath="DrugsID"/>
 
-        <Label Content="Диагноз:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="cmbDiagnosis" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" DisplayMemberPath="DiagnosisName" SelectedValuePath="DiagnosisID" Style="{StaticResource MainComboBox}"/>
+        <Label FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Диагноз:" Grid.Row="2" Grid.Column="0"/>
+        <ComboBox FontSize="18" Width="200" HorizontalAlignment="Left" x:Name="cmbDiagnosis" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" DisplayMemberPath="DiagnosisName" SelectedValuePath="DiagnosisID"/>
 
 
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Margin="15">
-            <Button Content="Сохранить"  Width="90" Click="SaveConclusion_Click" Style="{StaticResource MainButton}"/>
-            <Button Content="Отмена"  Width="90" Click="Cancel_Click" Style="{StaticResource MainButton}"/>
+            <Button
+                Content="Сохранить" 
+                Width="130"
+                Margin="5" 
+                Click="SaveConclusion_Click"
+                materialDesign:ButtonAssist.CornerRadius="10"/>
+            <Button
+                Content="Отмена" 
+                Width="130"
+                Margin="5" 
+                Click="Cancel_Click"
+                materialDesign:ButtonAssist.CornerRadius="10"/>
         </StackPanel>
     </Grid>
 </Window>

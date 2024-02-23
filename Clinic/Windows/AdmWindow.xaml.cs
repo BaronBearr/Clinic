@@ -20,6 +20,8 @@ namespace Clinic.Windows
     public partial class AdmWindow : Window
     {
         private ObservableCollection<Employee> employeesList;
+        private ObservableCollection<Client> clientsList;
+
         private string connectionString = @"Data Source=DESKTOP-2MK3618\SQLEXPRESS02;Initial Catalog=RaionnayaPoliklinika;Integrated Security=True";
 
         private int userId;
@@ -37,13 +39,50 @@ namespace Clinic.Windows
             LoadConclusions();
         }
         // ОКНО СОТРУДНИКИ
+
+        private void OpenPersonalCabinet_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+            Employee selectedEmployee = (Employee)dgEmployees.SelectedItem;
+
+            if (selectedEmployee != null)
+            {
+                if (EmployeeExists(selectedEmployee.UserID))
+                {
+                    OpenPersonalCabinet(selectedEmployee.UserID);
+                }
+                else
+                {
+                    MessageBox.Show("Данные пользователя не найдены");
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }
+        }
+
+        private bool EmployeeExists(int userId)
+        {
+            return employeesList.Any(employee => employee.UserID.Equals(userId));
+        }
+
+        private void OpenPersonalCabinet(int userId)
+        {
+            LKWindow personalCabinetWindow = new LKWindow(userId);
+            personalCabinetWindow.ShowDialog();
+        }
+
         public void LoadEmployees()
         {
             employeesList = new ObservableCollection<Employee>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT U.FullName, U.DoB, U.Email, JT.Name AS JobTitle, U.Phone, R.Name AS Role, U.Expirience, C.Name AS Category, U.Login " +
+                string query = "SELECT U.UserID, U.FullName, U.DoB, U.Email, JT.Name AS JobTitle, U.Phone, R.Name AS Role, U.Expirience, C.Name AS Category, U.Login " +
                                "FROM [User] U " +
                                "JOIN JobTitle JT ON U.JobTitleID = JT.JobTitleID " +
                                "JOIN Role R ON U.RoleID = R.RoleID " +
@@ -60,6 +99,7 @@ namespace Clinic.Windows
                     {
                         Employee employee = new Employee
                         {
+                            UserID = reader.GetInt32(0),
                             FullName = reader["FullName"].ToString(),
                             DoB = Convert.ToDateTime(reader["DoB"]),
                             Email = reader["Email"].ToString(),
@@ -117,6 +157,32 @@ namespace Clinic.Windows
                 MessageBox.Show("Выберите сотрудника для редактирования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private bool IsEmployeeInRecordTable(string login)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string checkRecordQuery = "SELECT COUNT(*) FROM Record WHERE UserID = (SELECT UserID FROM [User] WHERE Login = @Login)";
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand checkRecordCommand = new SqlCommand(checkRecordQuery, connection))
+                    {
+                        checkRecordCommand.Parameters.AddWithValue("@Login", login);
+                        int recordCount = (int)checkRecordCommand.ExecuteScalar();
+
+                        return recordCount > 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при проверке наличия сотрудника в таблице Record: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+        }
+
         private void DeleteEmployeeFromDatabase(string login)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -176,10 +242,16 @@ namespace Clinic.Windows
 
             if (result == MessageBoxResult.Yes)
             {
-                employeesList.Remove(selectedEmployee);
+                if (IsEmployeeInRecordTable(selectedEmployee.Login))
+                {
+                    MessageBox.Show("Невозможно удалить.\nУ сотрудника имеется актуальная запись.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
+                employeesList.Remove(selectedEmployee);
                 DeleteEmployeeFromDatabase(selectedEmployee.Login);
             }
+
         }
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
@@ -324,6 +396,32 @@ namespace Clinic.Windows
                 MessageBox.Show("Выберите клиента для редактирования", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private bool IsClientInRecordTable(int clientID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string checkRecordQuery = "SELECT COUNT(*) FROM Record WHERE ClientID = @ClientID";
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand checkRecordCommand = new SqlCommand(checkRecordQuery, connection))
+                    {
+                        checkRecordCommand.Parameters.AddWithValue("@ClientID", clientID);
+                        int recordCount = (int)checkRecordCommand.ExecuteScalar();
+
+                        return recordCount > 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при проверке наличия клиента в таблице Record: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+        }
+
         private void DeleteClient_Click(object sender, RoutedEventArgs e)
         {
             if (dgClients.SelectedItem != null)
@@ -336,24 +434,33 @@ namespace Clinic.Windows
                     {
                         Client selectedClient = (Client)dgClients.SelectedItem;
 
-                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        if (selectedClient != null)
                         {
-                            connection.Open();
-
-                            string deleteQuery = "DELETE FROM Client WHERE ClientID = @ClientID";
-                            using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
+                            if (IsClientInRecordTable(selectedClient.ClientID))
                             {
-                                deleteCommand.Parameters.AddWithValue("@ClientID", selectedClient.ClientID);
-                                int rowsAffected = deleteCommand.ExecuteNonQuery();
+                                MessageBox.Show("Невозможно удалить.\nУ клиента имеется актуальная запись.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
 
-                                if (rowsAffected > 0)
+                            using (SqlConnection connection = new SqlConnection(connectionString))
+                            {
+                                connection.Open();
+
+                                string deleteQuery = "DELETE FROM Client WHERE ClientID = @ClientID";
+                                using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
                                 {
-                                    MessageBox.Show("Клиент успешно удален", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                                    LoadClients();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Не удалось удалить клиента", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    deleteCommand.Parameters.AddWithValue("@ClientID", selectedClient.ClientID);
+                                    int rowsAffected = deleteCommand.ExecuteNonQuery();
+
+                                    if (rowsAffected > 0)
+                                    {
+                                        MessageBox.Show("Клиент успешно удален", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                                        LoadClients();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Не удалось удалить клиента", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    }
                                 }
                             }
                         }
@@ -369,6 +476,42 @@ namespace Clinic.Windows
                 MessageBox.Show("Выберите клиента для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+        private void OpenClientCabinet_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+            Client selectedClient = (Client)dgClients.SelectedItem;
+
+            if (selectedClient != null)
+            {
+                if (ClientExists(selectedClient.ClientID))
+                {
+                    OpenClientCabinet(selectedClient.ClientID);
+                }
+                else
+                {
+                    MessageBox.Show("Данные пациента не найдены");
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }
+        }
+
+        private bool ClientExists(int clientId)
+        {
+            return clientsList.Any(client => client.ClientID.Equals(clientId));
+        }
+
+        private void OpenClientCabinet(int clientId)
+        {
+            LKUserWindow personalCabinettWindow = new LKUserWindow(clientId);
+            personalCabinettWindow.ShowDialog();
+        }
+
         private void SearchClients(string searchString)
         {
             List<Client> filteredClients = new List<Client>();
@@ -441,7 +584,8 @@ namespace Clinic.Windows
         }
         public void LoadClients()
         {
-            List<Client> clients = new List<Client>();
+
+           clientsList = new ObservableCollection<Client>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -468,15 +612,39 @@ namespace Clinic.Windows
                             Login = reader["Login"].ToString(),
                             GenderName = reader["GenderName"].ToString()
                         };
-                        clients.Add(client);
+                        clientsList.Add(client);
                     }
                 }
             }
 
-            dgClients.ItemsSource = clients;
+            dgClients.ItemsSource = clientsList;
         }
 
         // ОКНО ЛЕКАРСТВА
+        private bool IsDrugUsedInConclusion(int drugID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string checkConclusionQuery = "SELECT COUNT(*) FROM Conclusion WHERE DrugsID = @DrugsID";
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand checkConclusionCommand = new SqlCommand(checkConclusionQuery, connection))
+                    {
+                        checkConclusionCommand.Parameters.AddWithValue("@DrugsID", drugID);
+                        int conclusionCount = (int)checkConclusionCommand.ExecuteScalar();
+
+                        return conclusionCount > 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при проверке использования лекарства в заключениях: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+        }
 
         public void LoadDrugs()
         {
@@ -535,9 +703,9 @@ namespace Clinic.Windows
                     {
                         Drug selectedDrug = (Drug)dgDrugs.SelectedItem;
 
-                        if (IsDrugUsedInDiagnosis(selectedDrug.DrugsID))
+                        if (IsDrugUsedInConclusion(selectedDrug.DrugsID))
                         {
-                            MessageBox.Show("Лекарство нельзя удалить, так как есть диагноз, который использует это лекарство", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            MessageBox.Show("Лекарство нельзя удалить, так как есть заключение, которое использует это лекарство", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
 
@@ -545,10 +713,10 @@ namespace Clinic.Windows
                         {
                             connection.Open();
 
-                            string deleteQuery = "DELETE FROM Drugs WHERE DrugsID = @DrugID";
+                            string deleteQuery = "DELETE FROM Drugs WHERE DrugsID = @DrugsID";
                             using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
                             {
-                                deleteCommand.Parameters.AddWithValue("@DrugID", selectedDrug.DrugsID);
+                                deleteCommand.Parameters.AddWithValue("@DrugsID", selectedDrug.DrugsID);
                                 int rowsAffected = deleteCommand.ExecuteNonQuery();
 
                                 if (rowsAffected > 0)
@@ -571,25 +739,10 @@ namespace Clinic.Windows
             }
             else
             {
-                MessageBox.Show("Выбери лекарство для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Выберите лекарство для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        private bool IsDrugUsedInDiagnosis(int drugID)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
 
-                string query = "SELECT COUNT(*) FROM Diagnosis WHERE DrugsID = @DrugID";
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@DrugID", drugID);
-                    int count = (int)command.ExecuteScalar();
-
-                    return count > 0;
-                }
-            }
-        }
         private void SearchDrugs(string searchString)
         {
             List<Drug> filteredDrugs = new List<Drug>();
@@ -647,6 +800,31 @@ namespace Clinic.Windows
 
 
         // ОКНО ДИАГНОЗ
+
+        private bool IsDiagnosisUsedInConclusion(int diagnosisID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string checkConclusionQuery = "SELECT COUNT(*) FROM Conclusion WHERE DiagnosisID = @DiagnosisID";
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand checkConclusionCommand = new SqlCommand(checkConclusionQuery, connection))
+                    {
+                        checkConclusionCommand.Parameters.AddWithValue("@DiagnosisID", diagnosisID);
+                        int conclusionCount = (int)checkConclusionCommand.ExecuteScalar();
+
+                        return conclusionCount > 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при проверке использования диагноза в заключениях: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+        }
 
         public void LoadDiagnoses()
         {
@@ -760,6 +938,12 @@ namespace Clinic.Windows
                     {
                         Diagnosis selectedDiagnosis = (Diagnosis)dgDiagnosis.SelectedItem;
 
+                        if (IsDiagnosisUsedInConclusion(selectedDiagnosis.DiagnosisID))
+                        {
+                            MessageBox.Show("Диагноз нельзя удалить, так как есть заключение, которое использует этот диагноз", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
                             connection.Open();
@@ -793,6 +977,7 @@ namespace Clinic.Windows
                 MessageBox.Show("Выберите диагноз для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
 
         // ОКНО ЗАПИСЬ
 
@@ -838,7 +1023,30 @@ namespace Clinic.Windows
 
             dgRecords.ItemsSource = records;
         }
+        private bool IsRecordUsedInConclusion(int recordID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string checkConclusionQuery = "SELECT COUNT(*) FROM Conclusion WHERE RecordID = @RecordID";
+                try
+                {
+                    connection.Open();
 
+                    using (SqlCommand checkConclusionCommand = new SqlCommand(checkConclusionQuery, connection))
+                    {
+                        checkConclusionCommand.Parameters.AddWithValue("@RecordID", recordID);
+                        int conclusionCount = (int)checkConclusionCommand.ExecuteScalar();
+
+                        return conclusionCount > 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при проверке использования записи в заключениях: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+        }
         private void ContextMenu_AddConclusion_Click(object sender, RoutedEventArgs e)
         {
             if (dgRecords.SelectedItem != null)
@@ -891,6 +1099,12 @@ namespace Clinic.Windows
                     {
                         Record selectedRecord = (Record)dgRecords.SelectedItem;
 
+                        if (IsRecordUsedInConclusion(selectedRecord.RecordID))
+                        {
+                            MessageBox.Show("Запись нельзя удалить, так как есть заключение, которое использует эту запись", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
                             connection.Open();
@@ -924,6 +1138,7 @@ namespace Clinic.Windows
                 MessageBox.Show("Выберите запись для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
         private void SearchRecords(string searchString)
         {
             List<Record> filteredRecords = new List<Record>();
@@ -1022,7 +1237,5 @@ namespace Clinic.Windows
 
             dgList.ItemsSource = conclusions;
         }
-
-
     }
 }
