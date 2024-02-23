@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Clinic.Windows"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        Icon="/Images/doctor.ico"
         Title="Окно пациента" Height="500" Width="1200">
     <Grid>
         <TabControl>
@@ -36,10 +37,16 @@
                     </DataGrid>
                     <StackPanel  Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,5" Height="40" Width="1194">
                         <Button 
+                             Width="130"
+                             Content="Записаться" 
+                             Click="AddRecord_Click" 
+                             Margin="30,0,0,5" 
+                             materialDesign:ButtonAssist.CornerRadius="10"/>
+                        <Button 
                             Width="100"
                             Content="ЛК" 
                             Click="LKWindow_Click" 
-                            Margin="930,0,0,5" 
+                            Margin="780,0,0,5" 
                             materialDesign:ButtonAssist.CornerRadius="10"/>
                         <Button
                             Width="100"

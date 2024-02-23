@@ -111,6 +111,7 @@ namespace Clinic.Windows
                             command.ExecuteNonQuery();
                         }
                     }
+                    admWindow.LoadConclusions();
                     MessageBox.Show("Заключение успешно добавлено", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                     this.Close();
                 }

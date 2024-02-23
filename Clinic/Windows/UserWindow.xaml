@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Clinic.Windows"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        Icon="/Images/doctor.ico"
         Title="Окно сотрудника" Height="500" Width="1200">
     <Grid>
         <TabControl>

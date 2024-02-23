@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -101,34 +102,36 @@ namespace Clinic.Windows
                 MessageBox.Show("Ошибка загрузки: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-       
+
 
         private void AddRecord_Click(object sender, RoutedEventArgs e)
         {
-            string connectionString = @"Data Source=DESKTOP-2MK3618\SQLEXPRESS02;Initial Catalog=RaionnayaPoliklinika;Integrated Security=True";
-
             try
             {
+                DateTime selectedDate = datePicker.SelectedDate.Value;
+                string selectedTimeString = ((ComboBoxItem)timeComboBox.SelectedItem).Content.ToString();
+                TimeSpan selectedTime = TimeSpan.Parse(selectedTimeString);
+
+
+                if (string.IsNullOrWhiteSpace(selectedTimeString))
+                {
+                    MessageBox.Show("Выберите время", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int selectedUserID = (int)userComboBox.SelectedValue;
+                int selectedClientID = (int)clientComboBox.SelectedValue;
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    DateTime selectedDate = datePicker.SelectedDate ?? DateTime.Now;
-                    TimeSpan selectedTime;
-                    if (!TimeSpan.TryParse(timeTextBox.Text, out selectedTime))
-                    {
-                        MessageBox.Show("Используй время в формате HH:mm", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-
-                    int selectedUserID = (int)userComboBox.SelectedValue;
-                    int selectedClientID = (int)clientComboBox.SelectedValue;
 
                     string updateQuery = "UPDATE Record " +
-                                         "SET Date = @Date, " +
-                                         "Time = @Time, " +
-                                         "UserID = @UserID, " +
-                                         "ClientID = @ClientID " +
-                                         "WHERE RecordID = @RecordID";
+                                        "SET Date = @Date, " +
+                                        "Time = @Time, " +
+                                        "UserID = @UserID, " +
+                                        "ClientID = @ClientID " +
+                                        "WHERE RecordID = @RecordID";
 
                     using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
                     {
@@ -159,55 +162,24 @@ namespace Clinic.Windows
             }
         }
 
-        private void TimeTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "12:00")
-            {
-                textBox.Text = "";
-                textBox.Foreground = Brushes.Black;
-            }
-        }
 
-        private void TimeTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "12:00";
-                textBox.Foreground = Brushes.LightGray;
-            }
-        }
 
-        private void TimeTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-
-            if (char.IsDigit(e.Text, 0) && textBox.Text.Length < 5)
-            {
-                textBox.Text += e.Text;
-
-                if (textBox.Text.Length == 2)
-                {
-                    textBox.Text += ":";
-                }
-                else if (textBox.Text.Length == 5)
-                {
-                    textBox.CaretIndex = textBox.Text.Length;
-                }
-            }
-
-            e.Handled = true;
-        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            try
+            {
 
             datePicker.SelectedDate = selectedRecord.Date;
-            DateTime baseDate = DateTime.Today;
-            DateTime fullDateTime = baseDate.Add(selectedRecord.Time);
-            timeTextBox.Text = fullDateTime.ToString("HH:mm");
+
+            string selectedTime = selectedRecord.Time.ToString(@"hh\:mm");
+            ComboBoxItem selectedItem = timeComboBox.Items.OfType<ComboBoxItem>().FirstOrDefault(item => item.Content.ToString() == selectedTime);
+
+            if (selectedItem != null)
+               {
+                  timeComboBox.SelectedItem = selectedItem;
+               }
+
 
             _selectedEmployee = userComboBox.Items.OfType<Employee>().FirstOrDefault(emp => emp.FullName == selectedRecord.UserName);
             if (_selectedEmployee != null)
@@ -220,6 +192,11 @@ namespace Clinic.Windows
             if (_selectedClient != null)
             {
                 clientComboBox.SelectedItem = _selectedClient;
+            }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ошибка: " + ex.Message);
             }
         }
 

@@ -25,6 +25,8 @@ namespace Clinic.Windows
         public RegistrationWindow()
         {
             InitializeComponent();
+            Uri iconUri = new Uri("C:\\Users\\BaronBear\\source\\repos\\Clinic\\Clinic\\Images\\health.ico", UriKind.RelativeOrAbsolute);
+            this.Icon = BitmapFrame.Create(iconUri);
         }
         private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {

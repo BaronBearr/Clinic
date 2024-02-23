@@ -27,6 +27,8 @@ namespace Clinic.Windows
             InitializeComponent();
             this.clientId = clientId;
             LoadPatientRecords(clientId);
+            Uri iconUri = new Uri("C:\\Users\\BaronBear\\source\\repos\\Clinic\\Clinic\\Images\\doctor.ico", UriKind.RelativeOrAbsolute);
+            this.Icon = BitmapFrame.Create(iconUri);
         }
 
         private void LKWindow_Click(object sender, RoutedEventArgs e)
@@ -91,6 +93,21 @@ namespace Clinic.Windows
                 }
             }
         }
+
+        public void RefreshPatientRecords()
+        {
+            LoadPatientRecords(clientId);
+        }
+
+
+        private void AddRecord_Click(object sender, RoutedEventArgs e)
+        {
+            int currentUserId = clientId; 
+
+            AddRecordClientWindow addRecordClientWindow = new AddRecordClientWindow(this, currentUserId);
+            addRecordClientWindow.ShowDialog();
+        }
+
 
 
     }

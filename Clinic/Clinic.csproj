@@ -122,6 +122,9 @@
     <Compile Include="Windows\AddEmployeeWindow.xaml.cs">
       <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\AddRecordClientWindow.xaml.cs">
+      <DependentUpon>AddRecordClientWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AddRecordWindow.xaml.cs">
       <DependentUpon>AddRecordWindow.xaml</DependentUpon>
     </Compile>
@@ -187,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AddEmployeeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddRecordClientWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,6 +278,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Windows\plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="hospital.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\admin.ico" />
+    <Resource Include="Images\doctor.ico" />
+    <Resource Include="Images\other.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\health.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />

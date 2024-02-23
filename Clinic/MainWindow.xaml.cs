@@ -26,7 +26,8 @@ namespace Clinic
         public MainWindow()
         {
             InitializeComponent();
-
+            Uri iconUri = new Uri("pack://application:,,,/hospital.ico", UriKind.RelativeOrAbsolute);
+            this.Icon = BitmapFrame.Create(iconUri);
             if (Application.Current.Properties.Contains("LastLoggedInUsername"))
             {
                 txtUsername.Text = (string)Application.Current.Properties["LastLoggedInUsername"];

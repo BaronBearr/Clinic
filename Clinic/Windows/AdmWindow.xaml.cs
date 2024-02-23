@@ -37,6 +37,9 @@ namespace Clinic.Windows
             LoadDiagnoses();
             LoadRecords();
             LoadConclusions();
+
+            Uri iconUri = new Uri("C:\\Users\\BaronBear\\source\\repos\\Clinic\\Clinic\\Images\\admin.ico", UriKind.RelativeOrAbsolute);
+            this.Icon = BitmapFrame.Create(iconUri);
         }
         // ОКНО СОТРУДНИКИ
 

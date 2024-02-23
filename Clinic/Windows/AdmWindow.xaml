@@ -7,6 +7,7 @@
         xmlns:Properties="clr-namespace:Clinic"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        Icon="/Images/admin.ico"
         Title="Окно администратора" Height="500" Width="1200">
     <Grid>
         <TabControl>

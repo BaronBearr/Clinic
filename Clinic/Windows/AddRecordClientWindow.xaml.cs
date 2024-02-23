@@ -1,5 +1,4 @@
-﻿using Clinic.AllClass;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,19 +12,25 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Clinic.AllClass;
+using Clinic.Windows;
+using Clinic.Properties;
 
 namespace Clinic.Windows
 {
-    public partial class AddRecordWindow : Window
+
+    public partial class AddRecordClientWindow : Window
     {
-        private AdmWindow admWindow;
+        private int currentUserId;
+        private ClientWindow clientWindow;
         private string connectionString = @"Data Source=DESKTOP-2MK3618\SQLEXPRESS02;Initial Catalog=RaionnayaPoliklinika;Integrated Security=True";
 
-        public AddRecordWindow(AdmWindow admWindow)
+        public AddRecordClientWindow(ClientWindow clientWindow, int currentUserId)
         {
             InitializeComponent();
-            this.admWindow = admWindow;
+            this.clientWindow = clientWindow;
             LoadEmployees();
+            this.currentUserId = currentUserId;
             LoadClients();
         }
 
@@ -73,19 +78,18 @@ namespace Clinic.Windows
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT ClientID, FullName FROM Client";
+
+                    string query = "SELECT FullName FROM Client WHERE ClientID = @ClientID";
                     SqlCommand command = new SqlCommand(query, connection);
+
+                    command.Parameters.AddWithValue("@ClientID", currentUserId);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while (reader.Read())
+                        if (reader.Read())
                         {
-                            Client client = new Client
-                            {
-                                ClientID = (int)reader["ClientID"],
-                                FullName = reader["FullName"].ToString()
-                            };
-                            clientComboBox.Items.Add(client);
+                            string fullName = reader["FullName"].ToString();
+                            clientTextBox.Text = fullName;
                         }
                     }
                 }
@@ -95,15 +99,14 @@ namespace Clinic.Windows
                 MessageBox.Show("Ошибка загрузки: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-       
+
         private void AddRecord_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (datePicker.SelectedDate == null ||
                     timeComboBox.SelectedItem == null ||
-                    userComboBox.SelectedValue == null ||
-                    clientComboBox.SelectedValue == null)
+                    userComboBox.SelectedValue == null)
                 {
                     MessageBox.Show("Заполните все поля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -135,8 +138,8 @@ namespace Clinic.Windows
                     }
                 }
 
-                int selectedClientID = (int)clientComboBox.SelectedValue;
 
+                int selectedClientID = currentUserId;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -169,12 +172,13 @@ namespace Clinic.Windows
                         insertCommand.Parameters.AddWithValue("@UserID", selectedUserID);
                         insertCommand.Parameters.AddWithValue("@ClientID", selectedClientID);
 
+
                         int rowsAffected = insertCommand.ExecuteNonQuery();
 
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Запись добавлена", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                            admWindow.LoadRecords();
+                            clientWindow.RefreshPatientRecords();
                             this.Close();
                         }
                         else
@@ -186,7 +190,7 @@ namespace Clinic.Windows
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -194,6 +198,5 @@ namespace Clinic.Windows
         {
             this.Close();
         }
-
     }
 }

@@ -31,8 +31,10 @@ namespace Clinic.Windows
             LoadDiagnoses();
             LoadDrugs();
             LoadRecords();
-
+            Uri iconUri = new Uri("C:\\Users\\BaronBear\\source\\repos\\Clinic\\Clinic\\Images\\doctor.ico", UriKind.RelativeOrAbsolute);
+            this.Icon = BitmapFrame.Create(iconUri);
         }
+
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
@@ -269,23 +271,26 @@ namespace Clinic.Windows
             dgDiagnosis.ItemsSource = diagnoses;
         }
 
-        public void LoadRecords()
+        private void LoadRecords()
         {
-            List<Record> records = new List<Record>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                string query = "SELECT R.RecordID, R.Date, R.Time, U.FullName AS UserName, C.FullName AS ClientName " +
-                               "FROM Record R " +
-                               "JOIN [User] U ON R.UserID = U.UserID " +
-                               "JOIN Client C ON R.ClientID = C.ClientID";
-
-                SqlCommand command = new SqlCommand(query, connection);
-
-                try
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
+                    string query = @"
+                SELECT r.RecordID, r.Date, r.Time, u.FullName AS UserName, c.FullName AS ClientName
+                FROM Record r
+                JOIN [User] u ON r.UserID = u.UserID
+                JOIN Client c ON r.ClientID = c.ClientID
+                WHERE r.UserID = @UserID";
+
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@UserID", userId);
+
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
+
+                    List<Record> records = new List<Record>();
 
                     while (reader.Read())
                     {
@@ -295,22 +300,23 @@ namespace Clinic.Windows
                             Date = Convert.ToDateTime(reader["Date"]),
                             Time = TimeSpan.Parse(reader["Time"].ToString()),
                             UserName = reader["UserName"].ToString(),
-                            ClientName = reader["ClientName"].ToString(),
+                            ClientName = reader["ClientName"].ToString()
                         };
 
                         records.Add(record);
                     }
 
                     reader.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка при загрузке данных: " + ex.Message);
+
+                    dgRecords.ItemsSource = records;
                 }
             }
-
-            dgRecords.ItemsSource = records;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке записей: " + ex.Message);
+            }
         }
+
 
         public void LoadConclusions()
         {
